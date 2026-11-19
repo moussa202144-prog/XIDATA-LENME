@@ -1,0 +1,209 @@
+/* =====================================================
+   XIDATA LENME - ACCUEIL (style XOORE)
+   À charger APRÈS home.css
+   ===================================================== */
+
+/* ---------- Haut : logo + cauris ---------- */
+
+.home-top {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 74px;
+}
+
+.home-logo {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border: 3px solid var(--ochre);
+  border-radius: 18px 14px 20px 12px;
+  transform: rotate(-6deg);
+  color: var(--ochre);
+  font-size: 2.2rem;
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+}
+
+.home-wallet {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 5px 6px 5px 12px;
+  border-radius: 999px;
+  border: 2px solid rgba(224, 160, 48, 0.6);
+  background: rgba(0, 0, 0, 0.35);
+  color: #f3e6c8;
+  font-size: 1.3rem;
+  font-weight: 900;
+  box-shadow: none;
+}
+
+.home-wallet:active {
+  transform: scale(0.97);
+  box-shadow: none;
+}
+
+.home-wallet .plus {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--ochre);
+  color: #2a1608;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+/* ---------- Titre ---------- */
+
+.home-hero {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 0;
+}
+
+.home-hero .subtitle {
+  margin: 0;
+  color: var(--ochre);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.28em;
+}
+
+.home-hero h1 {
+  margin: 6px 0 4px;
+  font-size: clamp(2.2rem, 12vw, 3.4rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ivory);
+  text-shadow: 0 3px 0 rgba(0, 0, 0, 0.4);
+}
+
+.home-hero h1 span {
+  color: var(--ochre);
+}
+
+.home-hero .tagline {
+  margin: 6px 12px 0;
+  color: #e8d8b8;
+  font-size: 1.02rem;
+  line-height: 1.3;
+}
+
+/* ---------- Illustration ---------- */
+
+.home-art {
+  min-height: 170px;
+  max-height: 280px;
+}
+
+.home-art svg {
+  width: min(92%, 340px);
+}
+
+/* ---------- Bascule Mode 1 / Mode 2 ---------- */
+
+.mode-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  padding: 6px;
+  border-radius: 22px;
+  border: 1px solid rgba(224, 160, 48, 0.35);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.mode-tab {
+  margin: 0;
+  padding: 10px 8px;
+  min-height: 58px;
+  border: 0;
+  border-radius: 16px;
+  background: transparent;
+  color: #f3e6c8;
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.15;
+  box-shadow: none;
+}
+
+.mode-tab.active {
+  background: linear-gradient(180deg, #f0b445, #d48a1c);
+  color: #2a1608;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+}
+
+.mode-tab:active {
+  transform: none;
+  box-shadow: none;
+}
+
+.mode-tab.active:active {
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* ---------- Joueurs connectés ---------- */
+
+.presence {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  color: #f3e6c8;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.presence[hidden] {
+  display: none;
+}
+
+.presence .dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 10px #22c55e;
+}
+
+/* ---------- Barre du bas à 4 boutons ---------- */
+
+.home-bottom {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* ---------- Écran en ligne : boutons ---------- */
+
+#onlinePanel .home-btn {
+  margin-top: 6px;
+}
+
+/* ---------- Petits écrans ---------- */
+
+@media (max-width: 360px) {
+  .home-logo {
+    width: 54px;
+    height: 54px;
+    font-size: 1.8rem;
+  }
+
+  .home-wallet {
+    font-size: 1.1rem;
+  }
+
+  .mode-tab {
+    font-size: 0.95rem;
+  }
+}

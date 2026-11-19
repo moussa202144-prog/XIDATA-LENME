@@ -1,0 +1,578 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1c110a">
+
+  <title>XIDATA LENME</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="african-theme.css">
+  <link rel="stylesheet" href="themes.css">
+  <link rel="stylesheet" href="home.css">
+  <link rel="stylesheet" href="home-v2.css">
+</head>
+
+<body data-view="home">
+
+  <!-- ACCUEIL -->
+  <section id="homeScreen" class="screen">
+
+    <div class="home-title">
+      <div class="brand-mark">✦</div>
+      <h1>XIDATA <span>LENME</span></h1>
+      <p class="subtitle">JEU DE STRATÉGIE</p>
+    </div>
+
+    <div class="home-art">
+      <svg viewBox="0 0 300 220" role="img"
+           aria-label="Plateau de jeu en croix">
+        <rect x="65" y="15" width="170" height="190"
+              rx="22" fill="#6b3f1d"
+              stroke="#e0a030" stroke-width="5"/>
+        <rect x="15" y="65" width="270" height="90"
+              rx="22" fill="#6b3f1d"
+              stroke="#e0a030" stroke-width="5"/>
+        <g fill="#24130a" stroke="#d9a45e" stroke-width="2">
+          <circle cx="150" cy="35" r="13"/>
+          <circle cx="150" cy="85" r="13"/>
+          <circle cx="150" cy="135" r="13"/>
+          <circle cx="150" cy="185" r="13"/>
+          <circle cx="35" cy="110" r="13"/>
+          <circle cx="85" cy="110" r="13"/>
+          <circle cx="215" cy="110" r="13"/>
+          <circle cx="265" cy="110" r="13"/>
+        </g>
+        <g>
+          <circle cx="150" cy="35" r="10" fill="#f3e6c8"/>
+          <circle cx="150" cy="85" r="10" fill="#17100b"/>
+          <circle cx="35" cy="110" r="10" fill="#f3e6c8"/>
+          <circle cx="265" cy="110" r="10" fill="#17100b"/>
+          <circle cx="150" cy="185" r="10" fill="#17100b"/>
+        </g>
+        <circle cx="150" cy="110" r="13"
+                fill="#24130a" stroke="#e0a030" stroke-width="3"/>
+      </svg>
+    </div>
+
+    <div class="home-buttons">
+      <button class="home-btn primary" id="classicBtn">
+        <span class="ico">♟</span>
+        MODE CLASSIQUE
+      </button>
+
+      <button class="home-btn" id="customBtn">
+        <span class="ico">⚔</span>
+        MODE PERSONNALISÉ
+      </button>
+
+            <button class="home-btn" id="aiBtn">
+        <span class="ico">🤖</span>
+        JOUER CONTRE L'ORDINATEUR
+            </button>
+
+      <button class="home-btn" id="onlineBtn">
+        <span class="ico">🌐</span>
+        JEU EN LIGNE
+      </button>
+    </div>
+
+    <div class="home-bottom">
+      <button id="rulesBtn">
+        <span class="ico">📖</span>
+        Règles
+      </button>
+      <button id="soundBtn">
+        <span class="ico">🔊</span>
+        Son
+      </button>
+      <button id="aboutBtn">
+        <span class="ico">ℹ️</span>
+        À propos
+      </button>
+    </div>
+
+  </section>
+
+  <!-- CONFIGURATION DU MODE IA -->
+<section id="aiScreen" class="screen" hidden>
+
+  <div class="screen-top">
+    <button class="icon-btn" id="aiBackBtn">←</button>
+    <h2>🤖 CONTRE L'ORDINATEUR</h2>
+    <div class="screen-top-spacer"></div>
+  </div>
+
+  <h3>Choisis la difficulté</h3>
+
+  <button class="home-btn" data-difficulty="easy">
+    FACILE
+  </button>
+
+  <button class="home-btn" data-difficulty="medium">
+    MOYEN
+  </button>
+
+  <button class="home-btn" data-difficulty="hard">
+    DIFFICILE
+  </button>
+
+  <p>Tu joueras avec les pions noirs.</p>
+
+  <h3>Type de partie</h3>
+
+  <button class="home-btn primary" id="aiClassicBtn">
+    MODE CLASSIQUE
+  </button>
+
+  <button class="home-btn" id="aiCustomBtn">
+    MODE PERSONNALISÉ
+  </button>
+
+
+</section>
+
+  <!-- ÉCRAN DE JEU -->
+  <section id="gameScreen" class="screen" hidden>
+
+    
+<div class="game-topbar">
+  <button class="icon-btn" id="optionsBtn" aria-label="Options">⚙️</button>
+  <h2>XIDATA LENME</h2>
+  <button class="icon-btn" id="gameRulesBtn" aria-label="Règles">?</button>
+</div>
+
+<!-- BOUTON PROFIL -->
+<button id="toggleProfileBtn" class="profile-toggle">
+  👤 Mon profil ▼
+</button>
+
+<!-- PROFIL ET STATISTIQUES -->
+<div class="player-dashboard" id="playerDashboard" hidden>
+
+  <div class="player-profile">
+    <h3>PROFIL DU JOUEUR</h3>
+
+    <div class="player-avatar">
+      <span id="playerAvatarDisplay">👤</span>
+    </div>
+
+    <label for="playerAvatar">Choisir un avatar</label>
+    <select id="playerAvatar">
+      <option value="👤">👤 Joueur</option>
+      <option value="🦁">🦁 Lion</option>
+      <option value="🐘">🐘 Éléphant</option>
+      <option value="🦅">🦅 Aigle</option>
+      <option value="🐆">🐆 Léopard</option>
+      <option value="👑">👑 Roi</option>
+      <option value="⚔️">⚔️ Guerrier</option>
+    </select>
+
+    <label for="playerNickname">Ton pseudonyme</label>
+    <input
+      type="text"
+      id="playerNickname"
+      maxlength="20"
+      placeholder="Entre ton pseudonyme"
+    >
+
+    <p>Bienvenue, <strong id="playerNicknameDisplay">Joueur</strong> !</p>
+  </div>
+
+  <div class="profile-stats">
+    <h3>MES PERFORMANCES</h3>
+    <p>🏆 Victoires : <strong id="profileWins">0</strong></p>
+    <p>⚔️ Défaites : <strong id="profileLosses">0</strong></p>
+    <p>📊 Taux de victoire : <strong id="profileWinRate">0 %</strong></p>
+  </div>
+
+</div>
+
+
+    <button id="fullscreenBtn" class="fullscreen-button">
+  ⛶ Agrandir le jeu
+    </button>
+    
+    <button id="gameFocusBtn" class="game-focus-button">
+  🎮 Activer le mode jeu
+    </button>
+    <p id="status" class="game-banner">Aux blancs de jouer</p>
+
+    <div id="board" class="board"></div>
+
+    <div class="scores">
+      <p>Blancs : <strong id="whiteCount">6</strong></p>
+      <p>Noirs : <strong id="blackCount">6</strong></p>
+    </div>
+    <div class="statistics">
+  <h3>STATISTIQUES</h3>
+
+  <p>Parties jouées : <strong id="gamesPlayed">0</strong></p>
+  <p>Victoires des Blancs : <strong id="whiteWins">0</strong></p>
+  <p>Victoires des Noirs : <strong id="blackWins">0</strong></p>
+  <p>Matchs nuls : <strong id="draws">0</strong></p>
+    </div>
+    <button id="historyBtn" class="history-button">
+  📜 Historique
+</button>
+
+<div class="game-history" id="gameHistoryPanel" hidden>
+  <h3>HISTORIQUE DES PARTIES</h3>
+
+  <div id="gameHistoryList">
+    <p>Aucune partie enregistrée.</p>
+  </div>
+
+  <button id="clearHistoryBtn" class="history-clear-button">
+    🗑️ Effacer l'historique
+  </button>
+</div>
+
+    <button id="undoPlacement" hidden>
+  ↶ Annuler le dernier placement
+    </button>
+
+    <button id="reset">Nouvelle partie</button>
+
+  </section>
+
+  <!-- MENU OPTIONS -->
+<section id="optionsPanel" class="screen" hidden>
+
+  <div class="screen-top">
+    <h2>⚙️ OPTIONS</h2>
+    <button class="icon-btn" id="closeOptionsBtn">✕</button>
+  </div>
+
+  <div class="options-content">
+
+    <h3>Paramètres de la partie</h3>
+
+    <button id="soundOptionsBtn">
+      🔊 Paramètres du son
+    </button>
+
+    <h3>Apparence</h3>
+
+    <label for="whiteColor">Couleur des pions blancs</label>
+    <input type="color" id="whiteColor" value="#f3e6c8">
+
+    <label for="blackColor">Couleur des pions noirs</label>
+    <input type="color" id="blackColor" value="#17100b">
+
+    <label for="boardColor">Couleur du plateau</label>
+    <input type="color" id="boardColor" value="#6b3f1d">
+
+    <button id="quitGameBtn">
+      🚪 Quitter la partie
+    </button>
+
+  </div>
+</section>
+
+  <!-- ÉCRAN EN LIGNE : STRUCTURE À CONNECTER -->
+  <section id="onlineScreen" class="screen" hidden>
+
+    <div class="screen-top">
+      <button class="icon-btn" id="onlineBackBtn">←</button>
+      <h2>Jeu en ligne</h2>
+      <div class="screen-top-spacer"></div>
+    </div>
+
+    <div id="onlinePanel">
+  <p>Joue avec une autre personne à distance.</p>
+
+  <p id="onlineStatus">
+    Appuie sur le bouton pour trouver un adversaire.
+  </p>
+
+  <p id="presence" class="presence" hidden>
+    <span class="dot"></span>
+    <strong id="onlineCount">0 joueur connecté</strong>
+  </p>
+
+  <button id="findMatchBtn" class="home-btn primary">
+    🔍 Trouver un adversaire
+  </button>
+
+  <button id="cancelMatchBtn" class="home-btn" hidden>
+    Annuler la recherche
+  </button>
+    </div>
+
+  </section>
+
+  <footer>XIDATA GAMES · CREATE · PLAY · INNOVATE</footer>
+
+    <script src="sounds.js"></script>
+
+  <!-- Navigation et chargement des systèmes -->
+ 
+<script>
+  const homeScreen = document.getElementById("homeScreen");
+  const gameScreen = document.getElementById("gameScreen");
+  const aiScreen = document.getElementById("aiScreen");
+  const onlineScreen = document.getElementById("onlineScreen");
+  const optionsPanel = document.getElementById("optionsPanel");
+
+  const whiteColorInput = document.getElementById("whiteColor");
+  const blackColorInput = document.getElementById("blackColor");
+  const boardColorInput = document.getElementById("boardColor");
+
+  let aiDifficulty = "easy";
+
+  function showScreen(view) {
+    document.body.dataset.view = view;
+
+    homeScreen.hidden = view !== "home";
+    gameScreen.hidden = view !== "game";
+    aiScreen.hidden = view !== "ai";
+    onlineScreen.hidden = view !== "online";
+    optionsPanel.hidden = true;
+  }
+
+  // MODE CLASSIQUE À DEUX JOUEURS
+  document.getElementById("classicBtn").addEventListener("click", () => {
+    showScreen("game");
+    if (window.startClassicGame) window.startClassicGame();
+  });
+
+  // MODE PERSONNALISÉ À DEUX JOUEURS
+  document.getElementById("customBtn").addEventListener("click", () => {
+    showScreen("game");
+    if (window.startCustomGame) window.startCustomGame();
+  });
+
+  // ACCÈS AU MODE ORDINATEUR
+  document.getElementById("aiBtn").addEventListener("click", () => {
+    showScreen("ai");
+  });
+
+  // RETOUR À L'ACCUEIL
+  document.getElementById("aiBackBtn").addEventListener("click", () => {
+    showScreen("home");
+  });
+
+  // CHOIX DE LA DIFFICULTÉ
+  document.querySelectorAll("[data-difficulty]").forEach(button => {
+    button.addEventListener("click", () => {
+      aiDifficulty = button.dataset.difficulty;
+
+      document.querySelectorAll("[data-difficulty]").forEach(item => {
+        item.classList.remove("primary");
+      });
+
+      button.classList.add("primary");
+    });
+  });
+
+  // LANCER UNE PARTIE CONTRE L'ORDINATEUR
+document.getElementById("aiClassicBtn").addEventListener("click", () => {
+  showScreen("game");
+
+  if (window.startAIClassicGame) {
+    window.startAIClassicGame(aiDifficulty);
+  } else {
+    alert("Le mode ordinateur n'est pas encore connecté.");
+  }
+});
+
+document.getElementById("aiCustomBtn").addEventListener("click", () => {
+  showScreen("game");
+
+  if (window.startAICustomGame) {
+    window.startAICustomGame(aiDifficulty);
+  } else {
+    alert("Le mode ordinateur n'est pas encore connecté.");
+  }
+  
+});
+  // JEU EN LIGNE
+  document.getElementById("onlineBtn").addEventListener("click", () => {
+    showScreen("online");
+  });
+
+  document.getElementById("onlineBackBtn").addEventListener("click", () => {
+    showScreen("home");
+  });
+
+  // OPTIONS
+  document.getElementById("optionsBtn").addEventListener("click", () => {
+    gameScreen.hidden = true;
+    optionsPanel.hidden = false;
+  });
+
+  document.getElementById("closeOptionsBtn").addEventListener("click", () => {
+    optionsPanel.hidden = true;
+    gameScreen.hidden = false;
+  });
+
+  document.getElementById("quitGameBtn").addEventListener("click", () => {
+    showScreen("home");
+  });
+
+  // COULEURS
+  whiteColorInput.addEventListener("input", () => {
+    document.documentElement.style.setProperty("--pw2", whiteColorInput.value);
+  });
+
+  blackColorInput.addEventListener("input", () => {
+    document.documentElement.style.setProperty("--pb2", blackColorInput.value);
+  });
+
+  boardColorInput.addEventListener("input", () => {
+    document.documentElement.style.setProperty("--bd1", boardColorInput.value);
+  });
+
+  // AUTRES BOUTONS
+  document.getElementById("rulesBtn").addEventListener("click", () => {
+    alert("Les règles détaillées seront ajoutées prochainement.");
+  });
+
+  document.getElementById("gameRulesBtn").addEventListener("click", () => {
+    alert("Les règles détaillées seront ajoutées prochainement.");
+  });
+
+  document.getElementById("aboutBtn").addEventListener("click", () => {
+    alert("XIDATA LENME — Un jeu de stratégie XIDATA GAMES.");
+  });
+
+  document.getElementById("soundBtn").addEventListener("click", () => {
+    alert("Le système sonore est disponible pendant la partie.");
+  });
+</script>
+  
+  <script src="sounds.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+<script src="firebase.js"></script>
+  
+<script>
+  const sharedReady = new Promise(resolve => {
+    window.addEventListener("xidata-shared-ready", resolve, { once: true });
+  });
+
+  const loader = document.createElement("script");
+  loader.src = "SHARED/shared-loader.js";
+
+  loader.onload = async () => {
+    await sharedReady;
+
+    const gameScript = document.createElement("script");
+    gameScript.src = "game.js";
+
+    gameScript.onload = async () => {
+  const firebaseState = window.LENME_FIREBASE;
+
+  if (firebaseState && firebaseState.readyPromise) {
+    await firebaseState.readyPromise;
+  }
+      const onlineScript = document.createElement("script");
+      onlineScript.src = "online.js";
+
+      onlineScript.onerror = () => {
+        document.getElementById("onlineStatus").textContent =
+          "Erreur de chargement de online.js.";
+      };
+
+      document.body.appendChild(onlineScript);
+    };
+
+    gameScript.onerror = () => {
+      document.getElementById("status").textContent =
+        "Erreur de chargement de game.js.";
+    };
+
+    document.body.appendChild(gameScript);
+  };
+
+  loader.onerror = () => {
+    document.getElementById("status").textContent =
+      "Erreur de chargement de shared-loader.js.";
+  };
+
+  document.body.appendChild(loader);
+</script>
+
+  
+  <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const toggleBtn = document.getElementById("toggleProfileBtn");
+  const dashboard = document.getElementById("playerDashboard");
+
+  if (!toggleBtn || !dashboard) return;
+
+  toggleBtn.addEventListener("click", function () {
+
+    dashboard.hidden = !dashboard.hidden;
+
+    toggleBtn.textContent = dashboard.hidden
+      ? "👤 Mon profil ▼"
+      : "👤 Fermer mon profil ▲";
+
+  });
+
+});
+  </script>
+
+  <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const fullscreenBtn = document.getElementById("fullscreenBtn");
+
+  if (!fullscreenBtn) return;
+
+  fullscreenBtn.addEventListener("click", async function () {
+
+    try {
+      if (!document.fullscreenElement) {
+        await document.documentElement.requestFullscreen();
+        fullscreenBtn.textContent = "✕ Quitter le plein écran";
+      } else {
+        await document.exitFullscreen();
+      }
+    } catch (error) {
+      alert("Le plein écran n'est pas disponible sur ce navigateur.");
+    }
+
+  });
+
+  document.addEventListener("fullscreenchange", function () {
+    fullscreenBtn.textContent = document.fullscreenElement
+      ? "✕ Quitter le plein écran"
+      : "⛶ Agrandir le jeu";
+  });
+
+});
+  </script>
+
+  <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const gameFocusBtn = document.getElementById("gameFocusBtn");
+  const gameScreen = document.getElementById("gameScreen");
+
+  if (!gameFocusBtn || !gameScreen) return;
+
+  gameFocusBtn.addEventListener("click", function () {
+
+    gameScreen.classList.toggle("game-focus-mode");
+
+    const active = gameScreen.classList.contains("game-focus-mode");
+
+    gameFocusBtn.textContent = active
+      ? "↩️ Quitter le mode jeu"
+      : "🎮 Activer le mode jeu";
+
+  });
+
+});
+  </script>
+  
+</body>
+</html>
