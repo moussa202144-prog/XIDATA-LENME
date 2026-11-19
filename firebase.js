@@ -1,12 +1,13 @@
 /* =====================================================
-   XIDATA LENME - CONFIGURATION FIREBASE
-   Initialise Firebase une seule fois et expose
-   window.LENME_FIREBASE pour online.js.
+   XIDATA LENME - FIREBASE
+   Initialise Firebase, connecte le joueur en anonyme
+   et expose window.LENME_FIREBASE pour online.js.
 
    Ordre de chargement dans index.html :
-   1. firebase-app-compat.js   (SDK)
-   2. firebase-database-compat.js (SDK)
-   3. firebase.js              (ce fichier)
+   1. firebase-app-compat.js
+   2. firebase-auth-compat.js
+   3. firebase-database-compat.js
+   4. firebase.js (ce fichier)
    ===================================================== */
 
 (() => {
@@ -23,71 +24,55 @@ const firebaseConfig = {
     measurementId: "G-J58GE79DWN"
   };
 
-const notReady = reason => {
+  const notReady = reason => {
     console.error("XIDATA LENME - Firebase :", reason);
-    window.LENME_FIREBASE = {
-      ready: false,
-      reason
-    };
+    window.LENME_FIREBASE = { ready: false, reason, readyPromise: null };
   };
 
-  if (!window.firebase || !firebase.database) {
-    notReady("Le SDK Firebase n'est pas chargé.");
+  if (!window.firebase || !firebase.database || !firebase.auth) {
+    notReady("le SDK Firebase (app, auth, database) n'est pas chargé.");
     return;
   }
 
-  if (Object.values(firebaseConfig).some(
-    value => !value || value.startsWith("TON_") ||
-             value === "TA_VRAIE_API_KEY"
-  )) {
-    notReady("La configuration Firebase est incomplète.");
+  if (Object.values(firebaseConfig).some(v => !v || String(v).includes("COLLE_ICI"))) {
+    notReady("la configuration n'est pas renseignée dans firebase.js.");
     return;
   }
 
   try {
+    // Réutilise l'application si elle existe déjà.
     const app = firebase.apps.length
       ? firebase.app()
       : firebase.initializeApp(firebaseConfig);
 
-    const auth = firebase.auth(app);
-const db = firebase.database(app);
+    const state = {
+      ready: false,
+      reason: "",
+      uid: null,
+      app,
+      auth: firebase.auth(app),
+      db: firebase.database(app),
+      readyPromise: null
+    };
 
-const state = {
-  ready: false,
-  app: app,
-  auth: auth,
-  db: db,
-  readyPromise: null
-};
+    // La connexion est asynchrone : online.js attend readyPromise.
+    state.readyPromise = state.auth.signInAnonymously()
+      .then(credential => {
+        state.uid = credential.user.uid;
+        state.ready = true;
+        console.log("XIDATA LENME : Firebase prêt !");
+        return true;
+      })
+      .catch(error => {
+        state.reason = error && error.code === "auth/operation-not-allowed"
+          ? "la connexion anonyme n'est pas activée (console Firebase > Authentication > Méthode de connexion)."
+          : (error && error.message) || "connexion impossible.";
+        console.error("XIDATA LENME - Authentification :", error);
+        return false;
+      });
 
-window.LENME_FIREBASE = state;
-
-state.readyPromise = auth.signInAnonymously()
-  .then(() => {
-    state.ready = true;
-    console.log("XIDATA LENME : Firebase authentifié !");
-    return true;
-  })
-  .catch(error => {
-  document.getElementById("onlineStatus").textContent =
-  "Erreur Firebase : " + state.reason;
-  console.error("Erreur authentification :", error);
-  return false;
-});
-
-auth.signInAnonymously()
-  .then(() => {
-    window.LENME_FIREBASE.ready = true;
-    console.log("XIDATA LENME : Firebase authentifié !");
-  })
-  .catch(error => {
-    console.error("Erreur authentification :", error);
-    window.LENME_FIREBASE.reason = error.message;
-  });
-
-    console.log("XIDATA LENME : Firebase prêt !");
-
+    window.LENME_FIREBASE = state;
   } catch (error) {
-    notReady(error.message || "Initialisation impossible.");
+    notReady((error && error.message) || "initialisation impossible.");
   }
 })();
