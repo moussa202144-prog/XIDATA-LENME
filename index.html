@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -20,184 +19,190 @@
   <!-- ACCUEIL -->
   <section id="homeScreen" class="screen">
 
-    <div class="home-title">
-      <div class="brand-mark">✦</div>
+    <div class="home-top">
+      <div class="home-logo" id="logoBtn" role="img" aria-label="XIDATA GAMES"><span>X</span></div>
+
+      <button class="home-wallet" id="walletBtn" aria-label="Mes cauris : ouvrir la boutique">
+        <svg class="cauri" viewBox="0 0 24 32" width="22" height="30" aria-hidden="true">
+          <ellipse cx="12" cy="16" rx="9" ry="14" fill="#f3e6c8" stroke="#b99d68" stroke-width="2"/>
+          <path d="M12 5V27" stroke="#6b3f1d" stroke-width="3" stroke-linecap="round"/>
+          <path d="M8 9h8M8 14h8M8 19h8M8 24h8" stroke="#6b3f1d" stroke-width="1.5"/>
+        </svg>
+        <span id="walletBalance">0</span>
+        <span class="plus">+</span>
+      </button>
+    </div>
+
+    <div class="home-hero">
+      <p class="subtitle">JEU DE STRATÉGIE · 2 JOUEURS</p>
       <h1>XIDATA <span>LENME</span></h1>
-      <p class="subtitle">JEU DE STRATÉGIE</p>
+      <p class="tagline">Un plateau en croix. Deux joueurs. Chaque coup compte.</p>
     </div>
 
     <div class="home-art">
-      <svg viewBox="0 0 300 220" role="img"
-           aria-label="Plateau de jeu en croix">
-        <rect x="65" y="15" width="170" height="190"
-              rx="22" fill="#6b3f1d"
-              stroke="#e0a030" stroke-width="5"/>
-        <rect x="15" y="65" width="270" height="90"
-              rx="22" fill="#6b3f1d"
-              stroke="#e0a030" stroke-width="5"/>
-        <g fill="#24130a" stroke="#d9a45e" stroke-width="2">
-          <circle cx="150" cy="35" r="13"/>
-          <circle cx="150" cy="85" r="13"/>
-          <circle cx="150" cy="135" r="13"/>
-          <circle cx="150" cy="185" r="13"/>
-          <circle cx="35" cy="110" r="13"/>
-          <circle cx="85" cy="110" r="13"/>
-          <circle cx="215" cy="110" r="13"/>
-          <circle cx="265" cy="110" r="13"/>
+      <svg viewBox="0 0 340 250" role="img" aria-label="Plateau en croix avec des pions">
+        <defs>
+          <g id="xShape">
+            <rect x="-144" y="-24" width="288" height="48" rx="20"/>
+            <rect x="-24" y="-144" width="48" height="288" rx="20"/>
+          </g>
+
+          <radialGradient id="holeGrad" cx="50%" cy="38%" r="70%">
+            <stop offset="0" stop-color="#3d2312"/>
+            <stop offset="1" stop-color="#1a0d06"/>
+          </radialGradient>
+
+          <g id="pawnW">
+            <ellipse cx="0" cy="7" rx="13" ry="6.5" fill="#b99d68"/>
+            <rect x="-13" y="0" width="26" height="7" fill="#b99d68"/>
+            <ellipse cx="0" cy="0" rx="13" ry="6.5" fill="#eadbb6" stroke="#8f7440" stroke-width="1.5"/>
+            <ellipse cx="0" cy="0" rx="8.5" ry="4.2" fill="none" stroke="#c4532a" stroke-width="1.5" stroke-dasharray="2 3"/>
+            <path d="M0 -2.4L2.4 0L0 2.4L-2.4 0Z" fill="#c4532a"/>
+          </g>
+
+          <g id="pawnB">
+            <ellipse cx="0" cy="7" rx="13" ry="6.5" fill="#0b0603"/>
+            <rect x="-13" y="0" width="26" height="7" fill="#0b0603"/>
+            <ellipse cx="0" cy="0" rx="13" ry="6.5" fill="#2a170b" stroke="#0b0603" stroke-width="1.5"/>
+            <ellipse cx="0" cy="0" rx="8.5" ry="4.2" fill="none" stroke="#e0a030" stroke-width="1.5" stroke-dasharray="2 3"/>
+            <path d="M0 -2.4L2.4 0L0 2.4L-2.4 0Z" fill="#e0a030"/>
+          </g>
+        </defs>
+
+        <!-- Épaisseur du plateau -->
+        <g fill="#2a170b" stroke="#2a170b" stroke-width="8" stroke-linejoin="round">
+          <use href="#xShape" transform="translate(0 16) translate(170 150) matrix(.7071 .3536 -.7071 .3536 0 0)"/>
+          <use href="#xShape" transform="translate(0 12) translate(170 150) matrix(.7071 .3536 -.7071 .3536 0 0)"/>
+          <use href="#xShape" transform="translate(0 8) translate(170 150) matrix(.7071 .3536 -.7071 .3536 0 0)"/>
+          <use href="#xShape" transform="translate(0 4) translate(170 150) matrix(.7071 .3536 -.7071 .3536 0 0)"/>
         </g>
-        <g>
-          <circle cx="150" cy="35" r="10" fill="#f3e6c8"/>
-          <circle cx="150" cy="85" r="10" fill="#17100b"/>
-          <circle cx="35" cy="110" r="10" fill="#f3e6c8"/>
-          <circle cx="265" cy="110" r="10" fill="#17100b"/>
-          <circle cx="150" cy="185" r="10" fill="#17100b"/>
+
+        <!-- Dessus du plateau : bordure puis bois -->
+        <g transform="translate(170 150) matrix(.7071 .3536 -.7071 .3536 0 0)">
+          <use href="#xShape" fill="#e0a030" stroke="#e0a030" stroke-width="8" stroke-linejoin="round"/>
+          <use href="#xShape" fill="#8f5a2a"/>
+
+          <!-- Les 13 cases -->
+          <g fill="url(#holeGrad)" stroke="#c99a5b" stroke-width="2">
+            <circle cx="0" cy="-120" r="15"/>
+            <circle cx="0" cy="-80" r="15"/>
+            <circle cx="0" cy="-40" r="15"/>
+            <circle cx="0" cy="0" r="15"/>
+            <circle cx="0" cy="40" r="15"/>
+            <circle cx="0" cy="80" r="15"/>
+            <circle cx="0" cy="120" r="15"/>
+            <circle cx="-120" cy="0" r="15"/>
+            <circle cx="-80" cy="0" r="15"/>
+            <circle cx="-40" cy="0" r="15"/>
+            <circle cx="40" cy="0" r="15"/>
+            <circle cx="80" cy="0" r="15"/>
+            <circle cx="120" cy="0" r="15"/>
+          </g>
         </g>
-        <circle cx="150" cy="110" r="13"
-                fill="#24130a" stroke="#e0a030" stroke-width="3"/>
+
+        <!-- Pions, du plus haut au plus bas -->
+        <use href="#pawnW" x="254.9" y="101.6"/>
+        <use href="#pawnW" x="85.1" y="101.6"/>
+        <use href="#pawnW" x="141.7" y="129.9"/>
+        <use href="#pawnB" x="141.7" y="158.1"/>
+        <use href="#pawnB" x="85.1" y="186.4"/>
+        <use href="#pawnB" x="254.9" y="186.4"/>
+
+        <!-- Pion couronné qui flotte -->
+        <ellipse cx="170" cy="150" rx="18" ry="8" fill="#000" opacity=".25"/>
+        <g transform="translate(170 62)">
+          <g class="float">
+            <use href="#pawnW" transform="scale(1.3)"/>
+            <path transform="scale(1.3)" d="M-8-1L-10-13L-4-7L0-16L4-7L10-13L8-1Z"
+                  fill="#e0a030" stroke="#7a4b0c" stroke-width="1.2" stroke-linejoin="round"/>
+          </g>
+        </g>
       </svg>
     </div>
 
-    <div class="home-buttons">
-      <button class="home-btn primary" id="classicBtn">
-        <span class="ico">♟</span>
-        MODE CLASSIQUE
+    <div class="mode-switch" role="tablist" aria-label="Mode de jeu">
+      <button class="mode-tab active" data-mode="classic" role="tab" aria-selected="true">
+        Mode 1 · Classique
       </button>
-
-      <button class="home-btn" id="customBtn">
-        <span class="ico">⚔</span>
-        MODE PERSONNALISÉ
-      </button>
-
-            <button class="home-btn" id="aiBtn">
-        <span class="ico">🤖</span>
-        JOUER CONTRE L'ORDINATEUR
-            </button>
-
-      <button class="home-btn" id="onlineBtn">
-        <span class="ico">🌐</span>
-        JEU EN LIGNE
+      <button class="mode-tab" data-mode="custom" role="tab" aria-selected="false">
+        Mode 2 · Personnalisé
       </button>
     </div>
 
+    <div class="home-buttons">
+      <button class="home-btn primary" id="onlineBtn">
+        <span class="ico">🌍</span>
+        Jeu en ligne
+      </button>
+
+      <button class="home-btn" id="aiBtn">
+        <span class="ico">🤖</span>
+        Jouer contre l'ordinateur
+      </button>
+
+      <button class="home-btn" id="localBtn">
+        <span class="ico">👥</span>
+        Deux joueurs · même appareil
+      </button>
+    </div>
+
+    <p class="presence" id="presence" hidden>
+      <span class="dot"></span>
+      <span id="onlineCount"></span>
+    </p>
+
     <div class="home-bottom">
       <button id="rulesBtn">
-        <span class="ico">📖</span>
+        <span class="ico">📜</span>
         Règles
+      </button>
+      <button id="settingsBtn">
+        <span class="ico">⚙️</span>
+        Options
       </button>
       <button id="soundBtn">
         <span class="ico">🔊</span>
         Son
       </button>
-      <button id="aboutBtn">
-        <span class="ico">ℹ️</span>
-        À propos
+      <button id="shareBtn">
+        <span class="ico">📤</span>
+        Partager
       </button>
     </div>
 
   </section>
 
-  <!-- CONFIGURATION DU MODE IA -->
-<section id="aiScreen" class="screen" hidden>
+  <!-- CONFIGURATION DU MODE ORDINATEUR -->
+  <section id="aiScreen" class="screen" hidden>
 
-  <div class="screen-top">
-    <button class="icon-btn" id="aiBackBtn">←</button>
-    <h2>🤖 CONTRE L'ORDINATEUR</h2>
-    <div class="screen-top-spacer"></div>
-  </div>
+    <div class="screen-top">
+      <button class="icon-btn" id="aiBackBtn">←</button>
+      <h2>🤖 CONTRE L'ORDINATEUR</h2>
+      <div class="screen-top-spacer"></div>
+    </div>
 
-  <h3>Choisis la difficulté</h3>
+    <h3>Choisis la difficulté</h3>
 
-  <button class="home-btn" data-difficulty="easy">
-    FACILE
-  </button>
+    <button class="home-btn primary" data-difficulty="easy">FACILE</button>
+    <button class="home-btn" data-difficulty="medium">MOYEN</button>
+    <button class="home-btn" data-difficulty="hard">DIFFICILE</button>
 
-  <button class="home-btn" data-difficulty="medium">
-    MOYEN
-  </button>
+    <p>Tu joueras avec les pions noirs.</p>
+    <p id="aiModeLabel">Mode : Classique</p>
 
-  <button class="home-btn" data-difficulty="hard">
-    DIFFICILE
-  </button>
+    <button class="home-btn primary" id="aiStartBtn">COMMENCER</button>
 
-  <p>Tu joueras avec les pions noirs.</p>
-
-  <h3>Type de partie</h3>
-
-  <button class="home-btn primary" id="aiClassicBtn">
-    MODE CLASSIQUE
-  </button>
-
-  <button class="home-btn" id="aiCustomBtn">
-    MODE PERSONNALISÉ
-  </button>
-
-
-</section>
+  </section>
 
   <!-- ÉCRAN DE JEU -->
   <section id="gameScreen" class="screen" hidden>
 
-    
-<div class="game-topbar">
-  <button class="icon-btn" id="optionsBtn" aria-label="Options">⚙️</button>
-  <h2>XIDATA LENME</h2>
-  <button class="icon-btn" id="gameRulesBtn" aria-label="Règles">?</button>
-</div>
-
-<!-- BOUTON PROFIL -->
-<button id="toggleProfileBtn" class="profile-toggle">
-  👤 Mon profil ▼
-</button>
-
-<!-- PROFIL ET STATISTIQUES -->
-<div class="player-dashboard" id="playerDashboard" hidden>
-
-  <div class="player-profile">
-    <h3>PROFIL DU JOUEUR</h3>
-
-    <div class="player-avatar">
-      <span id="playerAvatarDisplay">👤</span>
+    <div class="game-topbar">
+      <button class="icon-btn" id="optionsBtn" aria-label="Options">⚙️</button>
+      <h2>XIDATA LENME</h2>
+      <button class="icon-btn" id="gameRulesBtn" aria-label="Règles">?</button>
     </div>
 
-    <label for="playerAvatar">Choisir un avatar</label>
-    <select id="playerAvatar">
-      <option value="👤">👤 Joueur</option>
-      <option value="🦁">🦁 Lion</option>
-      <option value="🐘">🐘 Éléphant</option>
-      <option value="🦅">🦅 Aigle</option>
-      <option value="🐆">🐆 Léopard</option>
-      <option value="👑">👑 Roi</option>
-      <option value="⚔️">⚔️ Guerrier</option>
-    </select>
-
-    <label for="playerNickname">Ton pseudonyme</label>
-    <input
-      type="text"
-      id="playerNickname"
-      maxlength="20"
-      placeholder="Entre ton pseudonyme"
-    >
-
-    <p>Bienvenue, <strong id="playerNicknameDisplay">Joueur</strong> !</p>
-  </div>
-
-  <div class="profile-stats">
-    <h3>MES PERFORMANCES</h3>
-    <p>🏆 Victoires : <strong id="profileWins">0</strong></p>
-    <p>⚔️ Défaites : <strong id="profileLosses">0</strong></p>
-    <p>📊 Taux de victoire : <strong id="profileWinRate">0 %</strong></p>
-  </div>
-
-</div>
-
-
-    <button id="fullscreenBtn" class="fullscreen-button">
-  ⛶ Agrandir le jeu
-    </button>
-    
-    <button id="gameFocusBtn" class="game-focus-button">
-  🎮 Activer le mode jeu
-    </button>
     <p id="status" class="game-banner">Aux blancs de jouer</p>
 
     <div id="board" class="board"></div>
@@ -206,73 +211,101 @@
       <p>Blancs : <strong id="whiteCount">6</strong></p>
       <p>Noirs : <strong id="blackCount">6</strong></p>
     </div>
-    <div class="statistics">
-  <h3>STATISTIQUES</h3>
-
-  <p>Parties jouées : <strong id="gamesPlayed">0</strong></p>
-  <p>Victoires des Blancs : <strong id="whiteWins">0</strong></p>
-  <p>Victoires des Noirs : <strong id="blackWins">0</strong></p>
-  <p>Matchs nuls : <strong id="draws">0</strong></p>
-    </div>
-    <button id="historyBtn" class="history-button">
-  📜 Historique
-</button>
-
-<div class="game-history" id="gameHistoryPanel" hidden>
-  <h3>HISTORIQUE DES PARTIES</h3>
-
-  <div id="gameHistoryList">
-    <p>Aucune partie enregistrée.</p>
-  </div>
-
-  <button id="clearHistoryBtn" class="history-clear-button">
-    🗑️ Effacer l'historique
-  </button>
-</div>
 
     <button id="undoPlacement" hidden>
-  ↶ Annuler le dernier placement
+      ↶ Annuler le dernier placement
     </button>
 
     <button id="reset">Nouvelle partie</button>
 
+    <!-- Profil du joueur -->
+    <button class="profile-toggle" id="profileToggle" type="button">👤 Mon profil ▾</button>
+
+    <div class="player-dashboard" id="playerDashboard" hidden>
+      <div class="player-profile">
+        <h3>PROFIL</h3>
+        <div class="player-avatar" id="playerAvatarDisplay">👤</div>
+
+        <label for="playerAvatar">Avatar</label>
+        <select id="playerAvatar">
+          <option value="👤">👤 Joueur</option>
+          <option value="🦁">🦁 Lion</option>
+          <option value="🐘">🐘 Éléphant</option>
+          <option value="🦒">🦒 Girafe</option>
+          <option value="🐆">🐆 Léopard</option>
+          <option value="🦅">🦅 Aigle</option>
+          <option value="🐊">🐊 Crocodile</option>
+          <option value="🦓">🦓 Zèbre</option>
+        </select>
+
+        <label for="playerNickname">Pseudonyme</label>
+        <input type="text" id="playerNickname" maxlength="16" autocomplete="off">
+
+        <p><strong id="playerNicknameDisplay">Joueur</strong></p>
+      </div>
+
+      <div class="profile-stats">
+        <h3>CONTRE L'ORDINATEUR</h3>
+        <p>Victoires <strong id="profileWins">0</strong></p>
+        <p>Défaites <strong id="profileLosses">0</strong></p>
+        <p>Réussite <strong id="profileWinRate">0 %</strong></p>
+      </div>
+    </div>
+
+    <button class="fullscreen-button" id="fullscreenBtn" type="button">⛶ Plein écran</button>
+
+    <!-- Historique et statistiques -->
+    <button class="history-button" id="historyBtn" type="button">📜 Historique</button>
+
+    <div id="gameHistoryPanel" hidden>
+      <div class="statistics">
+        <h3>STATISTIQUES</h3>
+        <p>Parties jouées <strong id="gamesPlayed">0</strong></p>
+        <p>Victoires des Blancs <strong id="whiteWins">0</strong></p>
+        <p>Victoires des Noirs <strong id="blackWins">0</strong></p>
+        <p>Matchs nuls <strong id="draws">0</strong></p>
+      </div>
+
+      <div class="game-history">
+        <h3>HISTORIQUE</h3>
+        <div id="gameHistoryList"></div>
+        <button class="history-clear-button" id="clearHistoryBtn" type="button">
+          🗑️ Effacer l'historique
+        </button>
+      </div>
+    </div>
+
   </section>
 
   <!-- MENU OPTIONS -->
-<section id="optionsPanel" class="screen" hidden>
+  <section id="optionsPanel" class="screen" hidden>
 
-  <div class="screen-top">
-    <h2>⚙️ OPTIONS</h2>
-    <button class="icon-btn" id="closeOptionsBtn">✕</button>
-  </div>
+    <div class="screen-top">
+      <h2>⚙️ OPTIONS</h2>
+      <button class="icon-btn" id="closeOptionsBtn">✕</button>
+    </div>
 
-  <div class="options-content">
+    <div class="options-content">
 
-    <h3>Paramètres de la partie</h3>
+      <h3>Apparence</h3>
 
-    <button id="soundOptionsBtn">
-      🔊 Paramètres du son
-    </button>
+      <label for="whiteColor">Couleur des pions blancs</label>
+      <input type="color" id="whiteColor" value="#f3e6c8">
 
-    <h3>Apparence</h3>
+      <label for="blackColor">Couleur des pions noirs</label>
+      <input type="color" id="blackColor" value="#17100b">
 
-    <label for="whiteColor">Couleur des pions blancs</label>
-    <input type="color" id="whiteColor" value="#f3e6c8">
+      <label for="boardColor">Couleur du plateau</label>
+      <input type="color" id="boardColor" value="#6b3f1d">
 
-    <label for="blackColor">Couleur des pions noirs</label>
-    <input type="color" id="blackColor" value="#17100b">
+      <button id="quitGameBtn">
+        🚪 Quitter la partie
+      </button>
 
-    <label for="boardColor">Couleur du plateau</label>
-    <input type="color" id="boardColor" value="#6b3f1d">
+    </div>
+  </section>
 
-    <button id="quitGameBtn">
-      🚪 Quitter la partie
-    </button>
-
-  </div>
-</section>
-
-  <!-- ÉCRAN EN LIGNE : STRUCTURE À CONNECTER -->
+  <!-- ÉCRAN EN LIGNE -->
   <section id="onlineScreen" class="screen" hidden>
 
     <div class="screen-top">
@@ -282,297 +315,311 @@
     </div>
 
     <div id="onlinePanel">
-  <p>Joue avec une autre personne à distance.</p>
-
-  <p id="onlineStatus">
-    Appuie sur le bouton pour trouver un adversaire.
-  </p>
-
-  <p id="presence" class="presence" hidden>
-    <span class="dot"></span>
-    <strong id="onlineCount">0 joueur connecté</strong>
-  </p>
-
-  <button id="findMatchBtn" class="home-btn primary">
-    🔍 Trouver un adversaire
-  </button>
-
-  <button id="cancelMatchBtn" class="home-btn" hidden>
-    Annuler la recherche
-  </button>
+      <p>Joue avec une autre personne à distance.</p>
+      <p id="onlineStatus"></p>
+      <button class="home-btn primary" id="findMatchBtn">🌐 TROUVER UN ADVERSAIRE</button>
+      <button class="home-btn" id="cancelMatchBtn" hidden>ANNULER</button>
     </div>
 
   </section>
 
+  <div id="toast" class="toast" hidden></div>
+
   <footer>XIDATA GAMES · CREATE · PLAY · INNOVATE</footer>
 
-    <script src="sounds.js"></script>
-
-  <!-- Navigation et chargement des systèmes -->
- 
-<script>
-  const homeScreen = document.getElementById("homeScreen");
-  const gameScreen = document.getElementById("gameScreen");
-  const aiScreen = document.getElementById("aiScreen");
-  const onlineScreen = document.getElementById("onlineScreen");
-  const optionsPanel = document.getElementById("optionsPanel");
-
-  const whiteColorInput = document.getElementById("whiteColor");
-  const blackColorInput = document.getElementById("blackColor");
-  const boardColorInput = document.getElementById("boardColor");
-
-  let aiDifficulty = "easy";
-
-  function showScreen(view) {
-    document.body.dataset.view = view;
-
-    homeScreen.hidden = view !== "home";
-    gameScreen.hidden = view !== "game";
-    aiScreen.hidden = view !== "ai";
-    onlineScreen.hidden = view !== "online";
-    optionsPanel.hidden = true;
-  }
-
-  // MODE CLASSIQUE À DEUX JOUEURS
-  document.getElementById("classicBtn").addEventListener("click", () => {
-    showScreen("game");
-    if (window.startClassicGame) window.startClassicGame();
-  });
-
-  // MODE PERSONNALISÉ À DEUX JOUEURS
-  document.getElementById("customBtn").addEventListener("click", () => {
-    showScreen("game");
-    if (window.startCustomGame) window.startCustomGame();
-  });
-
-  // ACCÈS AU MODE ORDINATEUR
-  document.getElementById("aiBtn").addEventListener("click", () => {
-    showScreen("ai");
-  });
-
-  // RETOUR À L'ACCUEIL
-  document.getElementById("aiBackBtn").addEventListener("click", () => {
-    showScreen("home");
-  });
-
-  // CHOIX DE LA DIFFICULTÉ
-  document.querySelectorAll("[data-difficulty]").forEach(button => {
-    button.addEventListener("click", () => {
-      aiDifficulty = button.dataset.difficulty;
-
-      document.querySelectorAll("[data-difficulty]").forEach(item => {
-        item.classList.remove("primary");
-      });
-
-      button.classList.add("primary");
-    });
-  });
-
-  // LANCER UNE PARTIE CONTRE L'ORDINATEUR
-document.getElementById("aiClassicBtn").addEventListener("click", () => {
-  showScreen("game");
-
-  if (window.startAIClassicGame) {
-    window.startAIClassicGame(aiDifficulty);
-  } else {
-    alert("Le mode ordinateur n'est pas encore connecté.");
-  }
-});
-
-document.getElementById("aiCustomBtn").addEventListener("click", () => {
-  showScreen("game");
-
-  if (window.startAICustomGame) {
-    window.startAICustomGame(aiDifficulty);
-  } else {
-    alert("Le mode ordinateur n'est pas encore connecté.");
-  }
-  
-});
-  // JEU EN LIGNE
-  document.getElementById("onlineBtn").addEventListener("click", () => {
-    showScreen("online");
-  });
-
-  document.getElementById("onlineBackBtn").addEventListener("click", () => {
-    showScreen("home");
-  });
-
-  // OPTIONS
-  document.getElementById("optionsBtn").addEventListener("click", () => {
-    gameScreen.hidden = true;
-    optionsPanel.hidden = false;
-  });
-
-  document.getElementById("closeOptionsBtn").addEventListener("click", () => {
-    optionsPanel.hidden = true;
-    gameScreen.hidden = false;
-  });
-
-  document.getElementById("quitGameBtn").addEventListener("click", () => {
-    showScreen("home");
-  });
-
-  // COULEURS
-  whiteColorInput.addEventListener("input", () => {
-    document.documentElement.style.setProperty("--pw2", whiteColorInput.value);
-  });
-
-  blackColorInput.addEventListener("input", () => {
-    document.documentElement.style.setProperty("--pb2", blackColorInput.value);
-  });
-
-  boardColorInput.addEventListener("input", () => {
-    document.documentElement.style.setProperty("--bd1", boardColorInput.value);
-  });
-
-  // AUTRES BOUTONS
-  document.getElementById("rulesBtn").addEventListener("click", () => {
-    alert("Les règles détaillées seront ajoutées prochainement.");
-  });
-
-  document.getElementById("gameRulesBtn").addEventListener("click", () => {
-    alert("Les règles détaillées seront ajoutées prochainement.");
-  });
-
-  document.getElementById("aboutBtn").addEventListener("click", () => {
-    alert("XIDATA LENME — Un jeu de stratégie XIDATA GAMES.");
-  });
-
-  document.getElementById("soundBtn").addEventListener("click", () => {
-    alert("Le système sonore est disponible pendant la partie.");
-  });
-</script>
-  
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <script src="firebase.js"></script>
   <script src="sounds.js"></script>
 
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
-<script src="firebase.js"></script>
-  
-<script>
-  const sharedReady = new Promise(resolve => {
-    window.addEventListener("xidata-shared-ready", resolve, { once: true });
-  });
-
-  const loader = document.createElement("script");
-  loader.src = "SHARED/shared-loader.js";
-
-  loader.onload = async () => {
-    await sharedReady;
-
-    const gameScript = document.createElement("script");
-    gameScript.src = "game.js";
-
-    gameScript.onload = async () => {
-  const firebaseState = window.LENME_FIREBASE;
-
-  if (firebaseState && firebaseState.readyPromise) {
-    await firebaseState.readyPromise;
-  }
-      const onlineScript = document.createElement("script");
-      onlineScript.src = "online.js";
-
-      onlineScript.onerror = () => {
-        document.getElementById("onlineStatus").textContent =
-          "Erreur de chargement de online.js.";
-      };
-
-      document.body.appendChild(onlineScript);
-    };
-
-    gameScript.onerror = () => {
-      document.getElementById("status").textContent =
-        "Erreur de chargement de game.js.";
-    };
-
-    document.body.appendChild(gameScript);
-  };
-
-  loader.onerror = () => {
-    document.getElementById("status").textContent =
-      "Erreur de chargement de shared-loader.js.";
-  };
-
-  document.body.appendChild(loader);
-</script>
-
-  
   <script>
-document.addEventListener("DOMContentLoaded", function () {
+    const homeScreen = document.getElementById("homeScreen");
+    const gameScreen = document.getElementById("gameScreen");
+    const aiScreen = document.getElementById("aiScreen");
+    const onlineScreen = document.getElementById("onlineScreen");
+    const optionsPanel = document.getElementById("optionsPanel");
 
-  const toggleBtn = document.getElementById("toggleProfileBtn");
-  const dashboard = document.getElementById("playerDashboard");
+    const whiteColorInput = document.getElementById("whiteColor");
+    const blackColorInput = document.getElementById("blackColor");
+    const boardColorInput = document.getElementById("boardColor");
 
-  if (!toggleBtn || !dashboard) return;
+    const walletBalance = document.getElementById("walletBalance");
+    const toastEl = document.getElementById("toast");
 
-  toggleBtn.addEventListener("click", function () {
+    let aiDifficulty = "easy";
+    let homeMode = "classic";      // "classic" ou "custom"
+    let optionsFrom = "game";      // d'où le menu Options a été ouvert
+    let toastTimer = null;
 
-    dashboard.hidden = !dashboard.hidden;
-
-    toggleBtn.textContent = dashboard.hidden
-      ? "👤 Mon profil ▼"
-      : "👤 Fermer mon profil ▲";
-
-  });
-
-});
-  </script>
-
-  <script>
-document.addEventListener("DOMContentLoaded", function () {
-
-  const fullscreenBtn = document.getElementById("fullscreenBtn");
-
-  if (!fullscreenBtn) return;
-
-  fullscreenBtn.addEventListener("click", async function () {
-
-    try {
-      if (!document.fullscreenElement) {
-        await document.documentElement.requestFullscreen();
-        fullscreenBtn.textContent = "✕ Quitter le plein écran";
-      } else {
-        await document.exitFullscreen();
-      }
-    } catch (error) {
-      alert("Le plein écran n'est pas disponible sur ce navigateur.");
+    function showToast(message) {
+      toastEl.textContent = message;
+      toastEl.hidden = false;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { toastEl.hidden = true; }, 2200);
     }
 
-  });
+    function refreshWallet() {
+      if (window.XIDATA_WALLET) {
+        walletBalance.textContent = window.XIDATA_WALLET.getBalance();
+      }
+    }
 
-  document.addEventListener("fullscreenchange", function () {
-    fullscreenBtn.textContent = document.fullscreenElement
-      ? "✕ Quitter le plein écran"
-      : "⛶ Agrandir le jeu";
-  });
+    function showScreen(view) {
+      document.body.dataset.view = view;
 
-});
+      homeScreen.hidden = view !== "home";
+      gameScreen.hidden = view !== "game";
+      aiScreen.hidden = view !== "ai";
+      onlineScreen.hidden = view !== "online";
+      optionsPanel.hidden = true;
+
+      if (view === "home") refreshWallet();
+    }
+
+    /* ---------- Accueil ---------- */
+
+    // Bascule Mode 1 / Mode 2
+    document.querySelectorAll(".mode-tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        homeMode = tab.dataset.mode;
+
+        document.querySelectorAll(".mode-tab").forEach(item => {
+          const active = item === tab;
+          item.classList.toggle("active", active);
+          item.setAttribute("aria-selected", String(active));
+        });
+
+        document.getElementById("aiModeLabel").textContent =
+          "Mode : " + (homeMode === "custom" ? "Personnalisé" : "Classique");
+      });
+    });
+
+    // Deux joueurs sur le même appareil
+    document.getElementById("localBtn").addEventListener("click", () => {
+      showScreen("game");
+
+      if (homeMode === "custom") {
+        if (window.startCustomGame) window.startCustomGame();
+      } else {
+        if (window.startClassicGame) window.startClassicGame();
+      }
+    });
+
+    // Contre l'ordinateur
+    document.getElementById("aiBtn").addEventListener("click", () => {
+      showScreen("ai");
+    });
+
+    document.getElementById("aiBackBtn").addEventListener("click", () => {
+      showScreen("home");
+    });
+
+    document.querySelectorAll("[data-difficulty]").forEach(button => {
+      button.addEventListener("click", () => {
+        aiDifficulty = button.dataset.difficulty;
+
+        document.querySelectorAll("[data-difficulty]").forEach(item => {
+          item.classList.toggle("primary", item === button);
+        });
+      });
+    });
+
+    document.getElementById("aiStartBtn").addEventListener("click", () => {
+      showScreen("game");
+
+      const starter = homeMode === "custom"
+        ? window.startAICustomGame
+        : window.startAIClassicGame;
+
+      if (starter) {
+        starter(aiDifficulty);
+      } else {
+        alert("Le mode ordinateur n'est pas encore connecté.");
+      }
+    });
+
+    // Jeu en ligne
+    document.getElementById("onlineBtn").addEventListener("click", () => {
+      showScreen("online");
+    });
+
+    document.getElementById("onlineBackBtn").addEventListener("click", () => {
+      showScreen("home");
+    });
+
+    // Cauris
+    document.getElementById("walletBtn").addEventListener("click", () => {
+      showToast("La boutique arrive bientôt !");
+    });
+
+    document.getElementById("logoBtn").addEventListener("click", () => {
+      showToast("XIDATA LENME — un jeu XIDATA GAMES");
+    });
+
+    /* ---------- Barre du bas ---------- */
+
+    document.getElementById("rulesBtn").addEventListener("click", () => {
+      alert("Les règles détaillées seront ajoutées prochainement.");
+    });
+
+    document.getElementById("gameRulesBtn").addEventListener("click", () => {
+      alert("Les règles détaillées seront ajoutées prochainement.");
+    });
+
+    document.getElementById("settingsBtn").addEventListener("click", () => {
+      optionsFrom = "home";
+      document.getElementById("quitGameBtn").hidden = true;
+      homeScreen.hidden = true;
+      optionsPanel.hidden = false;
+    });
+
+    // Son : on réutilise le bouton flottant créé par sounds.js
+    const soundBtn = document.getElementById("soundBtn");
+    const soundIcon = soundBtn.querySelector(".ico");
+
+    function syncSoundIcon() {
+      const toggle = document.querySelector(".sound-toggle");
+      if (toggle) soundIcon.textContent = toggle.textContent;
+    }
+
+    soundBtn.addEventListener("click", () => {
+      const toggle = document.querySelector(".sound-toggle");
+      if (!toggle) return;
+      toggle.click();
+      syncSoundIcon();
+    });
+
+    window.addEventListener("load", syncSoundIcon);
+
+    // Partager
+    document.getElementById("shareBtn").addEventListener("click", () => {
+      const data = {
+        title: "XIDATA LENME",
+        text: "Viens jouer à XIDATA LENME !",
+        url: location.href
+      };
+
+      if (navigator.share) {
+        navigator.share(data).catch(() => {});
+      } else if (navigator.clipboard) {
+        navigator.clipboard.writeText(location.href)
+          .then(() => showToast("Lien copié !"))
+          .catch(() => showToast(location.href));
+      } else {
+        showToast(location.href);
+      }
+    });
+
+    /* ---------- Options ---------- */
+
+    document.getElementById("optionsBtn").addEventListener("click", () => {
+      optionsFrom = "game";
+      document.getElementById("quitGameBtn").hidden = false;
+      gameScreen.hidden = true;
+      optionsPanel.hidden = false;
+    });
+
+    document.getElementById("closeOptionsBtn").addEventListener("click", () => {
+      optionsPanel.hidden = true;
+
+      if (optionsFrom === "home") {
+        homeScreen.hidden = false;
+      } else {
+        gameScreen.hidden = false;
+      }
+    });
+
+    document.getElementById("quitGameBtn").addEventListener("click", () => {
+      showScreen("home");
+    });
+
+    // Couleurs
+    whiteColorInput.addEventListener("input", () => {
+      document.documentElement.style.setProperty("--pw2", whiteColorInput.value);
+    });
+
+    blackColorInput.addEventListener("input", () => {
+      document.documentElement.style.setProperty("--pb2", blackColorInput.value);
+    });
+
+    boardColorInput.addEventListener("input", () => {
+      document.documentElement.style.setProperty("--bd1", boardColorInput.value);
+    });
+
+    /* ---------- Profil et plein écran ---------- */
+
+    const profileToggle = document.getElementById("profileToggle");
+    const playerDashboard = document.getElementById("playerDashboard");
+
+    profileToggle.addEventListener("click", () => {
+      playerDashboard.hidden = !playerDashboard.hidden;
+      profileToggle.textContent = playerDashboard.hidden
+        ? "👤 Mon profil ▾"
+        : "👤 Mon profil ▴";
+    });
+
+    const fullscreenBtn = document.getElementById("fullscreenBtn");
+
+    fullscreenBtn.addEventListener("click", () => {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+        return;
+      }
+
+      const root = document.documentElement;
+
+      if (root.requestFullscreen) {
+        root.requestFullscreen().catch(() => showToast("Plein écran indisponible"));
+      } else {
+        showToast("Plein écran indisponible");
+      }
+    });
+
+    // Mode sans distractions pendant le plein écran
+    document.addEventListener("fullscreenchange", () => {
+      const on = !!document.fullscreenElement;
+      gameScreen.classList.toggle("game-focus-mode", on);
+      fullscreenBtn.textContent = on ? "⛶ Quitter le plein écran" : "⛶ Plein écran";
+    });
+
+    /* ---------- Chargement des systèmes partagés ---------- */
+
+    const sharedReady = new Promise(resolve => {
+      window.addEventListener("xidata-shared-ready", resolve, { once: true });
+    });
+
+    const loader = document.createElement("script");
+    loader.src = "SHARED/shared-loader.js";
+
+    loader.onload = async () => {
+      await sharedReady;
+      refreshWallet();
+
+      const gameScript = document.createElement("script");
+      gameScript.src = "game.js";
+
+      gameScript.onload = () => {
+        const onlineScript = document.createElement("script");
+        onlineScript.src = "online.js";
+        document.body.appendChild(onlineScript);
+      };
+
+      gameScript.onerror = () => {
+        document.getElementById("status").textContent =
+          "Erreur de chargement du jeu.";
+      };
+
+      document.body.appendChild(gameScript);
+    };
+
+    loader.onerror = () => {
+      document.getElementById("status").textContent =
+        "Erreur de chargement des systèmes partagés.";
+    };
+
+    document.body.appendChild(loader);
   </script>
 
-  <script>
-document.addEventListener("DOMContentLoaded", function () {
-
-  const gameFocusBtn = document.getElementById("gameFocusBtn");
-  const gameScreen = document.getElementById("gameScreen");
-
-  if (!gameFocusBtn || !gameScreen) return;
-
-  gameFocusBtn.addEventListener("click", function () {
-
-    gameScreen.classList.toggle("game-focus-mode");
-
-    const active = gameScreen.classList.contains("game-focus-mode");
-
-    gameFocusBtn.textContent = active
-      ? "↩️ Quitter le mode jeu"
-      : "🎮 Activer le mode jeu";
-
-  });
-
-});
-  </script>
-  
 </body>
 </html>
