@@ -3,7 +3,7 @@ window.XIDATA_SHOP = {
     undo: { name: "Annuler un déplacement", price: 5 },
     replay: { name: "Rejouer un coup", price: 8 },
     hint: { name: "Révéler un bon coup", price: 5 },
-    protection: { name: "Protection", price: 10 },
+    shield: { name: "Bouclier stratégique", price: 10 },
     coach: { name: "Conseil du stratège", price: 8 }
   },
 
