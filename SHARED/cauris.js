@@ -17,7 +17,7 @@ window.XIDATA_ECONOMY = Object.freeze({
     undo: 5,
     replay: 8,
     hint: 5,
-    protection: 10,
+    shield: 10,
     coach: 8
   },
 
