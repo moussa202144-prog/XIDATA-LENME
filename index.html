@@ -448,10 +448,14 @@
       showScreen("home");
     });
 
-    // Cauris
-    document.getElementById("walletBtn").addEventListener("click", () => {
-      showToast("La boutique arrive bientôt !");
-    });
+    // OUVRIR LA BOUTIQUE
+document.getElementById("walletBtn").addEventListener("click", () => {
+  if (window.XIDATA_SHOP) {
+    showShop();
+  } else {
+    showToast("La boutique n'est pas encore chargée.");
+  }
+});
 
     document.getElementById("logoBtn").addEventListener("click", () => {
       showToast("XIDATA LENME — un jeu XIDATA GAMES");
