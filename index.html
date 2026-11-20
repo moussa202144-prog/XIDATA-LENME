@@ -365,6 +365,56 @@
       }
     }
 
+    // AFFICHER LA BOUTIQUE
+function showShop() {
+  const panel = document.getElementById("shopPanel");
+  const balance = document.getElementById("shopBalance");
+  const itemsContainer = document.getElementById("shopItems");
+
+  if (!window.XIDATA_SHOP || !window.XIDATA_WALLET) {
+    showToast("La boutique n'est pas disponible.");
+    return;
+  }
+
+  balance.textContent = window.XIDATA_WALLET.display();
+  itemsContainer.innerHTML = "";
+
+  window.XIDATA_SHOP.getItems().forEach(item => {
+    const card = document.createElement("div");
+    card.className = "shop-item";
+
+    const name = document.createElement("strong");
+    name.textContent = item.name;
+
+    const price = document.createElement("p");
+    price.textContent = item.price + " 🐚";
+
+    const buyButton = document.createElement("button");
+    buyButton.textContent = "Acheter";
+
+    buyButton.addEventListener("click", () => {
+      const result = window.XIDATA_SHOP.buy(item.id);
+
+      showToast(result.message);
+
+      if (result.success) {
+        refreshWallet();
+        balance.textContent = window.XIDATA_WALLET.display();
+      }
+    });
+
+    card.append(name, price, buyButton);
+    itemsContainer.appendChild(card);
+  });
+
+  panel.hidden = false;
+}
+
+// FERMER LA BOUTIQUE
+document.getElementById("closeShopBtn").addEventListener("click", () => {
+  document.getElementById("shopPanel").hidden = true;
+});
+
     function showScreen(view) {
       document.body.dataset.view = view;
 
