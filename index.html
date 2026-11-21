@@ -569,9 +569,26 @@ document.getElementById("walletBtn").addEventListener("click", () => {
 
     /* ---------- Options ---------- */
 
-    document.getElementById("settingsBtn").addEventListener("click", () => {
-  window.XIDATA_SETTINGS.open();
-});
+    document.getElementById("optionsBtn").addEventListener("click", () => {
+      optionsFrom = "game";
+      document.getElementById("quitGameBtn").hidden = false;
+      gameScreen.hidden = true;
+      optionsPanel.hidden = false;
+    });
+
+    document.getElementById("closeOptionsBtn").addEventListener("click", () => {
+      optionsPanel.hidden = true;
+
+      if (optionsFrom === "home") {
+        homeScreen.hidden = false;
+      } else {
+        gameScreen.hidden = false;
+      }
+    });
+
+    document.getElementById("quitGameBtn").addEventListener("click", () => {
+      showScreen("home");
+    });
 
     // Couleurs
     whiteColorInput.addEventListener("input", () => {
