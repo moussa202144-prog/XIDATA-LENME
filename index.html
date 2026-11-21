@@ -524,12 +524,12 @@ document.getElementById("walletBtn").addEventListener("click", () => {
     /* ---------- Barre du bas ---------- */
 
     document.getElementById("rulesBtn").addEventListener("click", () => {
-      alert("Les règles détaillées seront ajoutées prochainement.");
-    });
+  if (window.XIDATA_SETTINGS) window.XIDATA_SETTINGS.openRules();
+});
 
-    document.getElementById("gameRulesBtn").addEventListener("click", () => {
-      alert("Les règles détaillées seront ajoutées prochainement.");
-    });
+document.getElementById("gameRulesBtn").addEventListener("click", () => {
+  if (window.XIDATA_SETTINGS) window.XIDATA_SETTINGS.openRules();
+});
 
     // Son : on réutilise le bouton flottant créé par sounds.js
     const soundBtn = document.getElementById("soundBtn");
