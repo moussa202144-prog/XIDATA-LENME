@@ -48,6 +48,85 @@ historyBtn.addEventListener("click", () => {
   let aiDifficulty = "easy";
   let aiThinking = false;
   let aiTimer = null;
+  let activeSettings = { time: 0, noBack: false };
+let appliedStamp = "";
+let turnTimerId = null, turnTimerKey = "", turnLeft = 0;
+
+const timerEl = document.createElement("p");
+timerEl.id = "turnTimer";
+timerEl.className = "turn-timer";
+timerEl.hidden = true;
+statusElement.after(timerEl);
+
+function settingsModeKey() {
+  if (currentGameMode.startsWith("ai")) return "ai";
+  if (currentGameMode === "online") return "online";
+  return "local";
+}
+
+function syncSettings() {
+  const S = window.XIDATA_SETTINGS;
+  if (!S) return;
+  const stamp = settingsModeKey() + ":" + S.version();
+  if (stamp === appliedStamp) return;
+  appliedStamp = stamp;
+  activeSettings = S.apply(settingsModeKey());
+}
+
+function backwardBlocked(player, dr) {
+  if (!activeSettings.noBack) return false;
+  return player === WHITE ? dr < 0 : dr > 0;
+}
+
+function isMyTurnToPlay() {
+  if (gameOver || customPlacement) return false;
+  if (aiMode) return currentPlayer === BLACK;
+  if (onlineMode) return currentPlayer === myColor;
+  return true;
+}
+
+function stopTurnTimer() {
+  clearInterval(turnTimerId);
+  turnTimerId = null;
+  turnTimerKey = "";
+  timerEl.hidden = true;
+}
+
+function showTimer() {
+  timerEl.hidden = false;
+  timerEl.textContent = "⏳ " + turnLeft + " s";
+  timerEl.classList.toggle("urgent", turnLeft <= 5);
+}
+
+function playRandomMove() {
+  const moves = getAllMoves(currentPlayer);
+  if (!moves.length) return;
+  applyMove(moves[Math.floor(Math.random() * moves.length)]);
+  finishTurn();
+}
+
+function syncTurnTimer() {
+  const limit = activeSettings.time;
+  if (!limit || !isMyTurnToPlay()) { stopTurnTimer(); return; }
+
+  const k = getBoardPositionKey() + currentPlayer;
+  if (k === turnTimerKey) return;
+
+  stopTurnTimer();
+  turnTimerKey = k;
+  turnLeft = limit;
+  showTimer();
+
+  turnTimerId = setInterval(() => {
+    turnLeft--;
+    showTimer();
+    if (turnLeft <= 0) {
+      stopTurnTimer();
+      playRandomMove();   // temps écoulé : coup au hasard
+    }
+  }, 1000);
+}
+  
 
   // CORRECTION : cette variable n'était jamais déclarée, ce qui faisait
   // planter tous les boutons "nouvelle partie" et le mode ordinateur.
