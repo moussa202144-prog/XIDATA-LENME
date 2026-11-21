@@ -523,13 +523,6 @@ document.getElementById("walletBtn").addEventListener("click", () => {
       alert("Les règles détaillées seront ajoutées prochainement.");
     });
 
-    document.getElementById("settingsBtn").addEventListener("click", () => {
-      optionsFrom = "home";
-      document.getElementById("quitGameBtn").hidden = true;
-      homeScreen.hidden = true;
-      optionsPanel.hidden = false;
-    });
-
     // Son : on réutilise le bouton flottant créé par sounds.js
     const soundBtn = document.getElementById("soundBtn");
     const soundIcon = soundBtn.querySelector(".ico");
