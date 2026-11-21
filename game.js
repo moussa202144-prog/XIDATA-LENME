@@ -754,6 +754,7 @@ if (aiMode) {
   }
 
   function render() {
+    syncSettings();
     boardElement.innerHTML = "";
 
     const possibleMoves =
@@ -805,6 +806,7 @@ if (aiMode) {
     resetButton.hidden = onlineMode;
 
     statusElement.textContent = gameOver ? endMessage : statusText();
+    syncTurnTimer();
   }
 
   function playEndSound() {
