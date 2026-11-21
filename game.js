@@ -398,6 +398,7 @@ if (aiMode) {
   /* ---------- Remise à zéro commune ---------- */
 
   function clearAITimer() {
+    stopTurnTimer();
     if (aiTimer !== null) {
       clearTimeout(aiTimer);
       aiTimer = null;
@@ -498,6 +499,7 @@ if (aiMode) {
     const captures = [];
 
     for (const [dr, dc] of directions) {
+      if (backwardBlocked(board[from], dr)) continue;
       const mr = row + dr, mc = col + dc;
       const tr = row + dr * 2, tc = col + dc * 2;
 
@@ -518,6 +520,7 @@ if (aiMode) {
     const moves = [];
 
     for (const [dr, dc] of directions) {
+      if (backwardBlocked(board[from], dr)) continue;
       const tr = row + dr, tc = col + dc;
       if (!isActive(tr, tc)) continue;
 
