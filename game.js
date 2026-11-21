@@ -16,22 +16,23 @@
   const historyPanel = document.getElementById("gameHistoryPanel");
   const clearHistoryBtn = document.getElementById("clearHistoryBtn");
 
-clearHistoryBtn.addEventListener("click", () => {
-  if (!confirm("Veux-tu vraiment effacer tout l'historique ?")) {
-    return;
-  }
+  clearHistoryBtn.addEventListener("click", () => {
+    if (!confirm("Veux-tu vraiment effacer tout l'historique ?")) {
+      return;
+    }
 
-  gameHistory = [];
-  saveGameHistory();
-  renderGameHistory();
-});
+    gameHistory = [];
+    saveGameHistory();
+    renderGameHistory();
+  });
 
-historyBtn.addEventListener("click", () => {
-  historyPanel.hidden = !historyPanel.hidden;
-  historyBtn.textContent = historyPanel.hidden
-    ? "📜 Historique"
-    : "✖ Fermer l'historique";
-});
+  historyBtn.addEventListener("click", () => {
+    historyPanel.hidden = !historyPanel.hidden;
+    historyBtn.textContent = historyPanel.hidden
+      ? "📜 Historique"
+      : "✖ Fermer l'historique";
+  });
+
   let board = [];
   let selected = null;
   let currentPlayer = WHITE;
@@ -48,316 +49,331 @@ historyBtn.addEventListener("click", () => {
   let aiDifficulty = "easy";
   let aiThinking = false;
   let aiTimer = null;
+
+  // RÉGLAGES (couleurs, chrono, retour arrière)
   let activeSettings = { time: 0, noBack: false };
-let appliedStamp = "";
-let turnTimerId = null, turnTimerKey = "", turnLeft = 0;
+  let appliedStamp = "";
+  let turnTimerId = null, turnTimerKey = "", turnLeft = 0;
 
-const timerEl = document.createElement("p");
-timerEl.id = "turnTimer";
-timerEl.className = "turn-timer";
-timerEl.hidden = true;
-statusElement.after(timerEl);
+  // RÈGLE ANTI-RÉPÉTITION
+  // Une position = plateau + joueur au trait. Si la même position
+  // revient 3 fois (contre l'ordinateur ou à deux sur le même appareil),
+  // la partie est nulle. Pas appliqué en ligne.
+  const REPEAT_LIMIT = 3;
+  const positionCounts = new Map();
+  let lastAIMove = null;
 
-function settingsModeKey() {
-  if (currentGameMode.startsWith("ai")) return "ai";
-  if (currentGameMode === "online") return "online";
-  return "local";
-}
-
-function syncSettings() {
-  const S = window.XIDATA_SETTINGS;
-  if (!S) return;
-  const stamp = settingsModeKey() + ":" + S.version();
-  if (stamp === appliedStamp) return;
-  appliedStamp = stamp;
-  activeSettings = S.apply(settingsModeKey());
-}
-
-function backwardBlocked(player, dr) {
-  if (!activeSettings.noBack) return false;
-  return player === WHITE ? dr < 0 : dr > 0;
-}
-
-function isMyTurnToPlay() {
-  if (gameOver || customPlacement) return false;
-  if (aiMode) return currentPlayer === BLACK;
-  if (onlineMode) return currentPlayer === myColor;
-  return true;
-}
-
-function stopTurnTimer() {
-  clearInterval(turnTimerId);
-  turnTimerId = null;
-  turnTimerKey = "";
+  const timerEl = document.createElement("p");
+  timerEl.id = "turnTimer";
+  timerEl.className = "turn-timer";
   timerEl.hidden = true;
-}
+  statusElement.after(timerEl);
 
-function showTimer() {
-  timerEl.hidden = false;
-  timerEl.textContent = "⏳ " + turnLeft + " s";
-  timerEl.classList.toggle("urgent", turnLeft <= 5);
-}
+  function settingsModeKey() {
+    if (currentGameMode.startsWith("ai")) return "ai";
+    if (currentGameMode === "online") return "online";
+    return "local";
+  }
 
-function playRandomMove() {
-  const moves = getAllMoves(currentPlayer);
-  if (!moves.length) return;
-  applyMove(moves[Math.floor(Math.random() * moves.length)]);
-  finishTurn();
-}
+  function syncSettings() {
+    const S = window.XIDATA_SETTINGS;
+    if (!S) return;
+    const stamp = settingsModeKey() + ":" + S.version();
+    if (stamp === appliedStamp) return;
+    appliedStamp = stamp;
+    activeSettings = S.apply(settingsModeKey());
+  }
 
-function syncTurnTimer() {
-  const limit = activeSettings.time;
-  if (!limit || !isMyTurnToPlay()) { stopTurnTimer(); return; }
+  function backwardBlocked(player, dr) {
+    if (!activeSettings.noBack) return false;
+    return player === WHITE ? dr < 0 : dr > 0;
+  }
 
-  const k = getBoardPositionKey() + currentPlayer;
-  if (k === turnTimerKey) return;
+  function isMyTurnToPlay() {
+    if (gameOver || customPlacement) return false;
+    if (aiMode) return currentPlayer === BLACK;
+    if (onlineMode) return currentPlayer === myColor;
+    return true;
+  }
 
-  stopTurnTimer();
-  turnTimerKey = k;
-  turnLeft = limit;
-  showTimer();
+  function stopTurnTimer() {
+    clearInterval(turnTimerId);
+    turnTimerId = null;
+    turnTimerKey = "";
+    timerEl.hidden = true;
+  }
 
-  turnTimerId = setInterval(() => {
-    turnLeft--;
+  function showTimer() {
+    timerEl.hidden = false;
+    timerEl.textContent = "⏳ " + turnLeft + " s";
+    timerEl.classList.toggle("urgent", turnLeft <= 5);
+  }
+
+  function playRandomMove() {
+    const moves = getAllMoves(currentPlayer);
+    if (!moves.length) return;
+    applyMove(moves[Math.floor(Math.random() * moves.length)]);
+    finishTurn();
+  }
+
+  function syncTurnTimer() {
+    const limit = activeSettings.time;
+    if (!limit || !isMyTurnToPlay()) { stopTurnTimer(); return; }
+
+    const k = getBoardPositionKey() + currentPlayer;
+    if (k === turnTimerKey) return;
+
+    stopTurnTimer();
+    turnTimerKey = k;
+    turnLeft = limit;
     showTimer();
-    if (turnLeft <= 0) {
-      stopTurnTimer();
-      playRandomMove();   // temps écoulé : coup au hasard
-    }
-  }, 1000);
-}
-  
+
+    turnTimerId = setInterval(() => {
+      turnLeft--;
+      showTimer();
+      if (turnLeft <= 0) {
+        stopTurnTimer();
+        playRandomMove();   // temps écoulé : coup au hasard
+      }
+    }, 1000);
+  }
 
   // CORRECTION : cette variable n'était jamais déclarée, ce qui faisait
   // planter tous les boutons "nouvelle partie" et le mode ordinateur.
   const aiPositionHistory = new Map();
 
   // PROFIL DU JOUEUR
-const PROFILE_KEY = "xidataLenmeProfile";
+  const PROFILE_KEY = "xidataLenmeProfile";
 
-const playerNicknameInput =
-  document.getElementById("playerNickname");
+  const playerNicknameInput =
+    document.getElementById("playerNickname");
 
-const playerNicknameDisplay =
-  document.getElementById("playerNicknameDisplay");
+  const playerNicknameDisplay =
+    document.getElementById("playerNicknameDisplay");
 
-const playerAvatarSelect =
-  document.getElementById("playerAvatar");
+  const playerAvatarSelect =
+    document.getElementById("playerAvatar");
 
-const playerAvatarDisplay =
-  document.getElementById("playerAvatarDisplay");
+  const playerAvatarDisplay =
+    document.getElementById("playerAvatarDisplay");
 
-let playerProfile = {};
+  let playerProfile = {};
 
-try {
-  playerProfile = JSON.parse(
-    localStorage.getItem(PROFILE_KEY)
-  ) || {};
-} catch (error) {
-  playerProfile = {};
-}
+  try {
+    playerProfile = JSON.parse(
+      localStorage.getItem(PROFILE_KEY)
+    ) || {};
+  } catch (error) {
+    playerProfile = {};
+  }
 
-playerProfile.nickname = playerProfile.nickname || "Joueur";
-playerProfile.avatar = playerProfile.avatar || "👤";
-playerProfile.wins = Number(playerProfile.wins) || 0;
-playerProfile.losses = Number(playerProfile.losses) || 0;
+  playerProfile.nickname = playerProfile.nickname || "Joueur";
+  playerProfile.avatar = playerProfile.avatar || "👤";
+  playerProfile.wins = Number(playerProfile.wins) || 0;
+  playerProfile.losses = Number(playerProfile.losses) || 0;
 
-playerNicknameInput.value = playerProfile.nickname;
-playerNicknameDisplay.textContent = playerProfile.nickname;
-
-playerAvatarSelect.value = playerProfile.avatar;
-playerAvatarDisplay.textContent = playerProfile.avatar;
-
-function savePlayerProfile() {
-  localStorage.setItem(
-    PROFILE_KEY,
-    JSON.stringify(playerProfile)
-  );
-}
-
-function renderProfileStats() {
-  const total = playerProfile.wins + playerProfile.losses;
-
-  const rate = total > 0
-    ? Math.round(playerProfile.wins / total * 100)
-    : 0;
-
-  document.getElementById("profileWins").textContent =
-    playerProfile.wins;
-
-  document.getElementById("profileLosses").textContent =
-    playerProfile.losses;
-
-  document.getElementById("profileWinRate").textContent =
-    rate + " %";
-}
-
-playerNicknameInput.addEventListener("input", () => {
-  playerProfile.nickname =
-    playerNicknameInput.value.trim() || "Joueur";
-
+  playerNicknameInput.value = playerProfile.nickname;
   playerNicknameDisplay.textContent = playerProfile.nickname;
-  savePlayerProfile();
-});
 
-playerAvatarSelect.addEventListener("change", () => {
-  playerProfile.avatar = playerAvatarSelect.value;
+  playerAvatarSelect.value = playerProfile.avatar;
   playerAvatarDisplay.textContent = playerProfile.avatar;
-  savePlayerProfile();
-});
 
-renderProfileStats();
-  
+  function savePlayerProfile() {
+    localStorage.setItem(
+      PROFILE_KEY,
+      JSON.stringify(playerProfile)
+    );
+  }
+
+  function renderProfileStats() {
+    const total = playerProfile.wins + playerProfile.losses;
+
+    const rate = total > 0
+      ? Math.round(playerProfile.wins / total * 100)
+      : 0;
+
+    document.getElementById("profileWins").textContent =
+      playerProfile.wins;
+
+    document.getElementById("profileLosses").textContent =
+      playerProfile.losses;
+
+    document.getElementById("profileWinRate").textContent =
+      rate + " %";
+  }
+
+  playerNicknameInput.addEventListener("input", () => {
+    playerProfile.nickname =
+      playerNicknameInput.value.trim() || "Joueur";
+
+    playerNicknameDisplay.textContent = playerProfile.nickname;
+    savePlayerProfile();
+  });
+
+  playerAvatarSelect.addEventListener("change", () => {
+    playerProfile.avatar = playerAvatarSelect.value;
+    playerAvatarDisplay.textContent = playerProfile.avatar;
+    savePlayerProfile();
+  });
+
+  renderProfileStats();
+
   // STATISTIQUES DU JEU
-const STATS_KEY = "xidataLenmeStats";
+  const STATS_KEY = "xidataLenmeStats";
 
   // HISTORIQUE DES PARTIES
-const HISTORY_KEY = "xidataLenmeHistory";
+  const HISTORY_KEY = "xidataLenmeHistory";
 
-let gameHistory = loadGameHistory();
+  let gameHistory = loadGameHistory();
 
-function loadGameHistory() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(HISTORY_KEY));
-    return Array.isArray(saved) ? saved : [];
-  } catch (error) {
-    return [];
+  function loadGameHistory() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(HISTORY_KEY));
+      return Array.isArray(saved) ? saved : [];
+    } catch (error) {
+      return [];
+    }
   }
-}
 
-function saveGameHistory() {
-  try {
-    localStorage.setItem(HISTORY_KEY, JSON.stringify(gameHistory));
-  } catch (error) {
-    console.warn("Erreur de sauvegarde de l'historique.");
+  function saveGameHistory() {
+    try {
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(gameHistory));
+    } catch (error) {
+      console.warn("Erreur de sauvegarde de l'historique.");
+    }
   }
-}
 
   function renderGameHistory() {
-  const list = document.getElementById("gameHistoryList");
-  if (!list) return;
+    const list = document.getElementById("gameHistoryList");
+    if (!list) return;
 
-  list.innerHTML = "";
+    list.innerHTML = "";
 
-  if (gameHistory.length === 0) {
-    list.textContent = "Aucune partie enregistrée.";
-    return;
-  }
+    if (gameHistory.length === 0) {
+      list.textContent = "Aucune partie enregistrée.";
+      return;
+    }
 
-  gameHistory.forEach((entry, index) => {
-    const item = document.createElement("div");
-    item.className = "history-entry";
+    gameHistory.forEach((entry, index) => {
+      const item = document.createElement("div");
+      item.className = "history-entry";
 
-    const title = document.createElement("strong");
-    title.textContent = `${entry.winner} — ${entry.result}`;
+      const title = document.createElement("strong");
+      title.textContent = `${entry.winner} — ${entry.result}`;
 
-    const details = document.createElement("p");
-    details.textContent =
-      `${entry.date} | Mode : ${entry.mode}`;
+      const details = document.createElement("p");
+      details.textContent =
+        `${entry.date} | Mode : ${entry.mode}`;
 
-    const deleteButton = document.createElement("button");
-    deleteButton.textContent = "🗑️";
-    deleteButton.className = "delete-history-entry";
-    deleteButton.type = "button";
+      const deleteButton = document.createElement("button");
+      deleteButton.textContent = "🗑️";
+      deleteButton.className = "delete-history-entry";
+      deleteButton.type = "button";
 
-    deleteButton.addEventListener("click", () => {
-      if (!confirm("Supprimer cette partie de l'historique ?")) {
-        return;
-      }
+      deleteButton.addEventListener("click", () => {
+        if (!confirm("Supprimer cette partie de l'historique ?")) {
+          return;
+        }
 
-      gameHistory.splice(index, 1);
-      saveGameHistory();
-      renderGameHistory();
+        gameHistory.splice(index, 1);
+        saveGameHistory();
+        renderGameHistory();
+      });
+
+      item.appendChild(title);
+      item.appendChild(details);
+      item.appendChild(deleteButton);
+
+      list.appendChild(item);
     });
-
-    item.appendChild(title);
-    item.appendChild(details);
-    item.appendChild(deleteButton);
-
-    list.appendChild(item);
-  });
   }
 
-let stats = loadStats();
+  let stats = loadStats();
 
-function loadStats() {
-  const defaults = {
-    gamesPlayed: 0,
-    whiteWins: 0,
-    blackWins: 0,
-    draws: 0
-  };
+  function loadStats() {
+    const defaults = {
+      gamesPlayed: 0,
+      whiteWins: 0,
+      blackWins: 0,
+      draws: 0
+    };
 
-  try {
-    const saved = JSON.parse(localStorage.getItem(STATS_KEY));
-    return saved ? { ...defaults, ...saved } : defaults;
-  } catch (error) {
-    return defaults;
+    try {
+      const saved = JSON.parse(localStorage.getItem(STATS_KEY));
+      return saved ? { ...defaults, ...saved } : defaults;
+    } catch (error) {
+      return defaults;
+    }
   }
-}
 
-function saveStats() {
-  try {
-    localStorage.setItem(STATS_KEY, JSON.stringify(stats));
-  } catch (error) {
-    console.warn("Erreur de sauvegarde des statistiques.");
+  function saveStats() {
+    try {
+      localStorage.setItem(STATS_KEY, JSON.stringify(stats));
+    } catch (error) {
+      console.warn("Erreur de sauvegarde des statistiques.");
+    }
   }
-}
 
-function renderStats() {
-  for (const key of ["gamesPlayed", "whiteWins", "blackWins", "draws"]) {
-    const element = document.getElementById(key);
-    if (element) element.textContent = stats[key];
+  function renderStats() {
+    for (const key of ["gamesPlayed", "whiteWins", "blackWins", "draws"]) {
+      const element = document.getElementById(key);
+      if (element) element.textContent = stats[key];
+    }
   }
-}
 
   function recordGameResult() {
-  if (resultRecorded || !gameOver || onlineMode) return;
+    if (resultRecorded || !gameOver || onlineMode) return;
 
-  resultRecorded = true;
-  stats.gamesPlayed++;
+    resultRecorded = true;
+    stats.gamesPlayed++;
 
-  if (winner === WHITE) {
-    stats.whiteWins++;
-  } else if (winner === BLACK) {
-    stats.blackWins++;
-  } else {
-    stats.draws++;
-  }
+    if (winner === WHITE) {
+      stats.whiteWins++;
+    } else if (winner === BLACK) {
+      stats.blackWins++;
+    } else {
+      stats.draws++;
+    }
+
     // Statistiques personnelles contre l'ordinateur
-if (aiMode) {
-  if (winner === BLACK) {
-    playerProfile.wins++;
-  } else if (winner === WHITE) {
-    playerProfile.losses++;
-  }
+    // (un match nul n'est ni une victoire ni une défaite)
+    if (aiMode) {
+      if (winner === BLACK) {
+        playerProfile.wins++;
+      } else if (winner === WHITE) {
+        playerProfile.losses++;
+      }
 
-  savePlayerProfile();
-  renderProfileStats();
-}
-    
-  addGameToHistory();
-  saveStats();
-  renderStats();
+      savePlayerProfile();
+      renderProfileStats();
+    }
+
+    addGameToHistory();
+    saveStats();
+    renderStats();
   }
 
   function addGameToHistory() {
-  const entry = {
-    date: new Date().toLocaleString("fr-FR"),
-    winner: winner === WHITE ? "Blancs" : "Noirs",
-    mode: currentGameMode,
-    result: endMessage.includes("lagade")
-      ? "Victoire par captures"
-      : "Victoire par blocage"
-  };
+    const isDraw = !winner;
 
-  gameHistory.unshift(entry);
+    const entry = {
+      date: new Date().toLocaleString("fr-FR"),
+      winner: isDraw ? "Match nul" : (winner === WHITE ? "Blancs" : "Noirs"),
+      mode: currentGameMode,
+      result: isDraw
+        ? "même position 3 fois"
+        : (endMessage.includes("lagade")
+            ? "Victoire par captures"
+            : "Victoire par blocage")
+    };
 
-  // Conserver les 100 dernières parties
-  gameHistory = gameHistory.slice(0, 100);
+    gameHistory.unshift(entry);
 
-  saveGameHistory();
-  renderGameHistory();
+    // Conserver les 100 dernières parties
+    gameHistory = gameHistory.slice(0, 100);
+
+    saveGameHistory();
+    renderGameHistory();
   }
 
   // MODE EN LIGNE
@@ -395,6 +411,25 @@ if (aiMode) {
     return board.filter(piece => piece === player).length;
   }
 
+  /* ---------- Anti-répétition ---------- */
+
+  // Enregistre la position actuelle et renvoie combien de fois elle est apparue.
+  function trackPosition() {
+    const k = getBoardPositionKey() + currentPlayer;
+    const n = (positionCounts.get(k) || 0) + 1;
+    positionCounts.set(k, n);
+    return n;
+  }
+
+  // Position obtenue si "mover" joue ce coup (sans modifier le plateau).
+  function positionAfter(move, mover) {
+    const saved = board.slice();
+    applyMove(move);
+    const k = getBoardPositionKey() + opponent(mover);
+    board = saved;
+    return k;
+  }
+
   /* ---------- Remise à zéro commune ---------- */
 
   function clearAITimer() {
@@ -421,6 +456,8 @@ if (aiMode) {
     aiMode = false;
     onlineMode = false;
     myColor = null;
+    positionCounts.clear();
+    lastAIMove = null;
   }
 
   /* ---------- Démarrage des parties ---------- */
@@ -440,6 +477,7 @@ if (aiMode) {
       board[key(3, i)] = BLACK;
     }
 
+    trackPosition();   // position de départ
     render();
   }
 
@@ -559,6 +597,60 @@ if (aiMode) {
 
   /* ---------- Intelligence artificielle ---------- */
 
+  // Note "de base" d'un coup (sans tenir compte des répétitions).
+  function baseMoveScore(move) {
+    if (aiDifficulty === "hard") {
+      return evaluateMoveWithLookahead(move);
+    }
+
+    let score = move.isCapture ? 100 : 0;
+    const { row, col } = coordinates(move.to);
+    if (row === 3 || col === 3) score += 2;
+    return score;
+  }
+
+  // Anti-répétition de l'ordinateur :
+  // - un coup qui amènerait un match nul (3e répétition) est écarté s'il y a d'autres choix ;
+  // - un coup qui répète une position déjà vue n'est gardé que s'il est nettement meilleur ;
+  // - l'ordinateur évite de rejouer le même pion en boucle, avec un peu de hasard.
+  function pickAIOptions(moves) {
+    const scored = moves.map(move => ({
+      move,
+      id: move.from + "-" + move.to,
+      score: baseMoveScore(move),
+      seen: positionCounts.get(positionAfter(move, WHITE)) || 0,
+      sameStone: lastAIMove !== null && move.from === lastAIMove.to
+    }));
+
+    const fresh = scored.filter(s => s.seen === 0);
+    let keep;
+
+    if (fresh.length > 0) {
+      const bestFresh = Math.max(...fresh.map(s => s.score));
+      const desperate = bestFresh <= -5000;   // défaite quasi certaine : le nul est acceptable
+
+      keep = scored.filter(s =>
+        s.seen === 0 ||
+        (s.seen === 1 && s.score > bestFresh + 40) ||
+        (s.seen >= REPEAT_LIMIT - 1 && desperate)
+      );
+    } else {
+      const safe = scored.filter(s => s.seen < REPEAT_LIMIT - 1);
+      keep = safe.length > 0 ? safe : scored;
+    }
+
+    const table = new Map(keep.map(s => [s.id, s]));
+
+    return {
+      moves: keep.map(s => s.move),
+      score(move) {
+        const s = table.get(move.from + "-" + move.to);
+        if (!s) return -Infinity;
+        return s.score - s.seen * 25 - (s.sameStone ? 6 : 0) + Math.random() * 3;
+      }
+    };
+  }
+
   function scheduleAIMove() {
     if (!aiMode || gameOver || currentPlayer !== WHITE || aiThinking) return;
 
@@ -576,23 +668,20 @@ if (aiMode) {
         return;
       }
 
+      const options = pickAIOptions(moves);
+
       const chosenMove = window.XIDATA_AI
         ? window.XIDATA_AI.chooseMove({
-            moves,
+            moves: options.moves,
             difficulty: aiDifficulty,
-            evaluateMove: move => {
-              if (aiDifficulty === "hard") {
-                return evaluateMoveWithLookahead(move);
-              }
-              let score = move.isCapture ? 100 : 0;
-              const { row, col } = coordinates(move.to);
-              if (row === 3 || col === 3) score += 2;
-              return score;
-            }
+            evaluateMove: move => options.score(move)
           })
-        : moves[Math.floor(Math.random() * moves.length)];
+        : options.moves[Math.floor(Math.random() * options.moves.length)];
 
-      if (chosenMove) applyMove(chosenMove);
+      if (chosenMove) {
+        applyMove(chosenMove);
+        lastAIMove = chosenMove;
+      }
 
       aiThinking = false;
       finishTurn();
@@ -841,6 +930,11 @@ if (aiMode) {
       gameOver = true;
       winner = mover;
       endMessage = `${playerName(mover)} gagnent par blocage !`;
+    } else if (!onlineMode && trackPosition() >= REPEAT_LIMIT) {
+      // Même position 3 fois : match nul (ordinateur et 2 joueurs)
+      gameOver = true;
+      winner = null;
+      endMessage = "Match nul : la même position est revenue 3 fois !";
     }
 
     if (gameOver) recordGameResult();
@@ -861,6 +955,9 @@ if (aiMode) {
   function afterPlacement() {
     customPlacement = false;
     currentPlayer = WHITE;
+
+    positionCounts.clear();
+    trackPosition();   // position de départ après le placement
 
     if (getAllMoves(WHITE).length === 0) {
       gameOver = true;
@@ -1031,7 +1128,7 @@ if (aiMode) {
     if (gameOver) playEndSound();
   }
 
-    window.LENME = {
+  window.LENME = {
     getMode: settingsModeKey,
     refresh: render,
     startOnlineGame,
@@ -1042,6 +1139,6 @@ if (aiMode) {
   };
 
   renderStats();
-renderGameHistory();
-setupGame();
+  renderGameHistory();
+  setupGame();
 })();
