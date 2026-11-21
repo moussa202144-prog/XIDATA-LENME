@@ -1037,6 +1037,16 @@ if (aiMode) {
     getState,
     onLocalState: null,
     onQuit: null
+    
+  };
+    window.LENME = {
+    getMode: settingsModeKey,
+    refresh: render,
+    startOnlineGame,
+    applyRemoteState,
+    getState,
+    onLocalState: null,
+    onQuit: null
   };
 
   renderStats();
