@@ -177,6 +177,9 @@
             <li>Ton adversaire ne peut plus bouger : tu gagnes par blocage.</li>
           </ul>
 
+          <h4>Match nul</h4>
+          <p>Si la même position revient 3 fois, la partie est nulle. Cette règle s'applique contre l'ordinateur et à deux sur le même appareil. Tu n'es jamais obligé de changer de pion : seule la 3e répétition arrête la partie. L'ordinateur évite de répéter les positions quand une autre option est aussi bonne.</p>
+
           <h4>Contre l'ordinateur</h4>
           <p>Tu joues les pions noirs. Choisis le niveau : facile, moyen ou difficile.</p>
 
