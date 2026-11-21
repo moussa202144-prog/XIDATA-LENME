@@ -575,18 +575,7 @@ document.getElementById("gameRulesBtn").addEventListener("click", () => {
 });
 
 document.getElementById("optionsBtn").addEventListener("click", () => {
-  document.getElementById("quitGameBtn").hidden = false;
-  gameScreen.hidden = true;
-  optionsPanel.hidden = false;
-});
-
-document.getElementById("closeOptionsBtn").addEventListener("click", () => {
-  optionsPanel.hidden = true;
-  gameScreen.hidden = false;
-});
-
-document.getElementById("quitGameBtn").addEventListener("click", () => {
-  showScreen("home");
+  if (window.XIDATA_SETTINGS) window.XIDATA_SETTINGS.open(null, true);
 });
     
 
