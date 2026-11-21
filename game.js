@@ -1031,14 +1031,6 @@ if (aiMode) {
     if (gameOver) playEndSound();
   }
 
-  window.LENME = {
-    startOnlineGame,
-    applyRemoteState,
-    getState,
-    onLocalState: null,
-    onQuit: null
-    
-  };
     window.LENME = {
     getMode: settingsModeKey,
     refresh: render,
