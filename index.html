@@ -576,15 +576,9 @@ document.getElementById("walletBtn").addEventListener("click", () => {
       optionsPanel.hidden = false;
     });
 
-    document.getElementById("closeOptionsBtn").addEventListener("click", () => {
-      optionsPanel.hidden = true;
-
-      if (optionsFrom === "home") {
-        homeScreen.hidden = false;
-      } else {
-        gameScreen.hidden = false;
-      }
-    });
+    document.getElementById("settingsBtn").addEventListener("click", () => {
+  window.XIDATA_SETTINGS.open();
+});
 
     document.getElementById("quitGameBtn").addEventListener("click", () => {
       showScreen("home");
