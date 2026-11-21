@@ -64,6 +64,7 @@
   let data = load();
   let version = 0;
   let tab = "ai";
+  let inGame = false;
 
   function load() {
     try {
@@ -185,6 +186,7 @@
         </div>
       </details>
 
+      <button type="button" class="ss-quit" id="ssQuit" hidden>🚪 Quitter la partie</button>
       <button type="button" class="ss-close" id="ssClose">Fermer</button>
     </div>`;
 
@@ -218,9 +220,13 @@
 
     root.querySelector("#ssBack").value = s.noBack ? "on" : "off";
 
+    const when = inGame
+      ? "Les réglages s'appliquent dès ton prochain coup."
+      : "Les règles s'appliquent à la prochaine partie.";
+
     root.querySelector("#ssNote").textContent = s.noBack
-      ? "Les règles s'appliquent à la prochaine partie. Un pion ne peut alors aller qu'en avant, à gauche ou à droite."
-      : "Les règles s'appliquent à la prochaine partie. Les pions peuvent avancer, reculer et aller sur les côtés.";
+      ? when + " Un pion ne peut alors aller qu'en avant, à gauche ou à droite."
+      : when + " Les pions peuvent avancer, reculer et aller sur les côtés.";
   }
 
   root.addEventListener("click", event => {
@@ -230,6 +236,12 @@
     if (!button) return;
 
     if (button.id === "ssClose") return close();
+    if (button.id === "ssQuit") {
+      close();
+      const quit = document.getElementById("quitGameBtn");
+      if (quit) quit.click();
+      return;
+    }
     if (button.dataset.tab) { tab = button.dataset.tab; return render(); }
     if (button.dataset.pawns) return change({ pawns: button.dataset.pawns });
     if (button.dataset.board) return change({ board: button.dataset.board });
@@ -243,14 +255,28 @@
     change({ noBack: event.target.value === "on" });
   });
 
-  function open(mode) {
+  /* open(mode, true) : ouvert depuis une partie en cours */
+  function open(mode, game) {
+    inGame = !!game;
+
+    if (inGame && !mode && window.LENME && typeof window.LENME.getMode === "function") {
+      mode = window.LENME.getMode();
+    }
     if (MODES.some(m => m[0] === mode)) tab = mode;
+
+    root.querySelector("#ssQuit").hidden = !inGame;
     render();
     root.hidden = false;
   }
 
   function close() {
     root.hidden = true;
+
+    // En partie : appliquer tout de suite les nouvelles couleurs.
+    if (inGame && window.LENME && typeof window.LENME.refresh === "function") {
+      window.LENME.refresh();
+    }
+    inGame = false;
   }
 
   document.body.appendChild(root);
