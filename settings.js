@@ -149,6 +149,42 @@
       </select>
       <p class="ss-note" id="ssNote"></p>
 
+      <details class="ss-rules" id="ssRules">
+        <summary>📜 Règles du jeu</summary>
+        <div class="ss-rules-body">
+          <h4>But du jeu</h4>
+          <p>Capturer tous les pions de l'adversaire, ou le bloquer pour qu'il ne puisse plus jouer.</p>
+
+          <h4>Le plateau</h4>
+          <p>Un plateau en croix de 13 cases. Chaque joueur a 6 pions. Les blancs jouent en premier.</p>
+
+          <h4>Mode 1 · Classique</h4>
+          <p>Les blancs occupent le haut et la gauche, les noirs le bas et la droite. La case centrale est vide.</p>
+
+          <h4>Mode 2 · Personnalisé</h4>
+          <p>Les joueurs placent leurs pions un par un, chacun à son tour, sur les cases libres. La case centrale doit rester vide. Les blancs placent en premier et jouent en premier. Tu peux annuler le dernier placement.</p>
+
+          <h4>Se déplacer</h4>
+          <p>À ton tour, avance un pion d'une case vers le haut, le bas, la gauche ou la droite, sur une case vide. Pas de déplacement en diagonale.</p>
+
+          <h4>Capturer</h4>
+          <p>Si un pion adverse est juste à côté du tien et que la case derrière lui est vide, saute par-dessus : il est retiré du plateau. Une seule capture par tour. Capturer n'est pas obligatoire.</p>
+
+          <h4>Gagner</h4>
+          <ul>
+            <li>Tu captures tous les pions adverses.</li>
+            <li>Ton adversaire ne peut plus bouger : tu gagnes par blocage.</li>
+          </ul>
+
+          <h4>Contre l'ordinateur</h4>
+          <p>Tu joues les pions noirs. Choisis le niveau : facile, moyen ou difficile.</p>
+
+          <h4>Réglages optionnels</h4>
+          <p><strong>Temps de réflexion :</strong> si le temps est écoulé, un coup au hasard est joué pour toi.</p>
+          <p><strong>Retour arrière :</strong> quand la règle est activée, un pion ne peut aller qu'en avant, à gauche ou à droite. Pour les blancs, avant = vers le bas ; pour les noirs, avant = vers le haut.</p>
+        </div>
+      </details>
+
       <button type="button" class="ss-close" id="ssClose">Fermer</button>
     </div>`;
 
@@ -219,5 +255,13 @@
 
   document.body.appendChild(root);
 
-  window.XIDATA_SETTINGS = { get, apply, open, close, version: () => version };
+  /* Ouvre le panneau directement sur les règles */
+  function openRules() {
+    open();
+    const details = root.querySelector("#ssRules");
+    details.open = true;
+    details.scrollIntoView({ block: "start" });
+  }
+
+  window.XIDATA_SETTINGS = { get, apply, open, openRules, close, version: () => version };
 })();
