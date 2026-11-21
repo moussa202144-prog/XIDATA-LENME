@@ -183,3 +183,42 @@
 .turn-timer.urgent {
   color: #ff6b4a;
 }
+
+/* Règles du jeu */
+#settingsSheet .ss-rules {
+  margin-top: 22px;
+  border: 1px solid rgba(224, 160, 48, 0.4);
+  border-radius: 18px;
+  background: #1f130a;
+  overflow: hidden;
+}
+
+#settingsSheet .ss-rules summary {
+  padding: 14px 16px;
+  color: var(--ochre, #e0a030);
+  font-size: 1.2rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+#settingsSheet .ss-rules-body {
+  padding: 0 16px 16px;
+  color: #e8d8b8;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+#settingsSheet .ss-rules-body h4 {
+  margin: 14px 0 4px;
+  color: #f0b445;
+  font-size: 1.05rem;
+}
+
+#settingsSheet .ss-rules-body p {
+  margin: 0 0 6px;
+}
+
+#settingsSheet .ss-rules-body ul {
+  margin: 0;
+  padding-left: 20px;
+}
